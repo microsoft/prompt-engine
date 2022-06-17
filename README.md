@@ -11,6 +11,8 @@ LLMs like GPT-3 and Codex have continued to push the bounds of what AI is capabl
 
 ## Usage
 
+The library currently supports a single pattern of multi-turn Natural Language to Code prompt generation:
+
 ### Code Engine
 Code Engine is a Prompt Engine that creates prompts for Natural Language to Code scenarios. These prompts generally have a description, which gives context for the NL->Code task and examples of NL->Code to coax specific behavior from the model. Code Engine can also keep track of new NL->Code interactions, allowing the model to effectively remember the last series of steps.
 
