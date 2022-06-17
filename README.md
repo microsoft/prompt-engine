@@ -51,7 +51,7 @@ console.log(10 * 18)
 /* what's 18 divided by 10? */
 ```
 
-Given a models response, you can use CodeEngine to add the interaction onto the prompt, giving the model "memory" of the last series of NL->Code interactions:
+Given this prompt, a code generation model could effectively "guess" the code necessary to handle the natural language input. Code Engine then enables us to remember that interaction and use it as context for future interactions:
 
 ```js
 ...
