@@ -1,6 +1,9 @@
 # Prompt Engine
 
-This repo contains an NPM utility library for creating and maintaining prompts for Large Language Models (LLMs). LLMs like GPT-3 and Codex have continued to push the bounds of what AI is capable of - they can capably generate language and code, but are also capable of emergent behavior like question answering, summarization, classification and dialog. One of the best techniques for enabling specific behavior out of LLMs is called prompt engineering - crafting inputs that coax the model to produce certain kinds of outputs. Prompt engineering can be as simple as formatting a question and passing it to the model, but it can also get quite complex - requiring substantial code to manipulate an dupdate strings. This library aims to make that easier. It also aims to codify patterns and practices around prompt engineering.
+This repo contains an NPM utility library for creating and maintaining prompts for Large Language Models (LLMs). 
+
+## Background
+LLMs like GPT-3 and Codex have continued to push the bounds of what AI is capable of - they can capably generate language and code, but are also capable of emergent behavior like question answering, summarization, classification and dialog. One of the best techniques for enabling specific behavior out of LLMs is called prompt engineering - crafting inputs that coax the model to produce certain kinds of outputs. Prompt engineering can be as simple as formatting a question and passing it to the model, but it can also get quite complex - requiring substantial code to manipulate an dupdate strings. This library aims to make that easier. It also aims to codify patterns and practices around prompt engineering.
 
 ## Contributing
 
