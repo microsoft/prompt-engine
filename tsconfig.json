@@ -1,0 +1,13 @@
+{
+  "include": [
+    "src/**/*.ts",
+  ],
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "outDir": "out",
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "types": ["@types/jest"]
+  }
+}
