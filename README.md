@@ -14,14 +14,14 @@ LLMs like GPT-3 and Codex have continued to push the bounds of what AI is capabl
 The library currently supports a single pattern of multi-turn Natural Language to Code prompt generation:
 
 ### Code Engine
-Code Engine is a Prompt Engine that creates prompts for Natural Language to Code scenarios. These prompts generally have a description, which gives context for the NL->Code task and examples of NL->Code to coax specific behavior from the model. Code Engine can also keep track of new NL->Code interactions, allowing the model to effectively remember the last series of steps.
+Code Engine creates prompts for Natural Language to Code scenarios. These prompts generally have a description, which gives context for the NL->Code task and examples of NL->Code to coax specific behavior from the model. Code Engine can also keep track of new NL->Code interactions, allowing the model to effectively remember the last series of steps.
 
 ```js
 // Import CodeEngine
 import { CodeEngine } from 'prompt-engine';
 
 // Add prompt description and NL->Code Examples
-let description = "Natural Language Commands to Math Code";
+let description = "Natural Language Commands to JavaScript Math Code. The code should log the result of the command to the console.";
 let examples = [
   { input: "what's 10 plus 18", response: "console.log(10 + 18)" },
   { input: "what's 10 times 18", response: "console.log(10 * 18)" },
@@ -37,10 +37,10 @@ let naturalLanguageQuery = "what's 18 divided by 10?";
 let prompt = codeEngine.createPrompt(naturalLanguageQuery);
 ```
 
-The above prompt is a string that formats the description of the task for the model to accomplish, examples of NL -> Code, and the latest natural language input:
+The prompt created by the code above is a string that formats the description of the task for the model to accomplish, provides examples of NL -> Code, and appends the latest natural language input:
 
 ```js
-/* Natural Language Commands to Math Code */
+/* Natural Language Commands to JavaScript Math Code. The code should log the result of the command to the console. */
 
 /* what's 10 plus 18 */
 console.log(10 + 18)
@@ -51,7 +51,7 @@ console.log(10 * 18)
 /* what's 18 divided by 10? */
 ```
 
-Given this prompt, a code generation model could effectively "guess" the code necessary to handle the natural language input. Code Engine then enables us to remember that interaction and use it as context for future interactions:
+Given this prompt, a code generation model can effectively produce the code necessary to handle the natural language input. Code Engine then enables us to remember that interaction and use it as context for future interactions:
 
 ```js
 ...
@@ -82,6 +82,15 @@ console.log(18 / 10)
 ```
 
 With this context, the code generation model has what it needs to resolve "that" as the result of the last NL->Code interaction. In this case, the model would correctly generate `console.log(1.8 * 2)`.
+
+## Managing Prompt Overflow
+Prompts for Large Language Models generally have limited size, depending on the language model being used. Given that prompt-engine can persist dialog history, it is possible for dialogs to get so long that the prompt overflows. The Code Engine pattern handles this situation by removing the oldest dialog interaction from the prompt, effectively only remembering the most recent interactions.
+
+You can specify the maximum tokens allowed in your prompt by passing a `maxTokens` parameter when constructing the Code Engine:
+
+```js
+let codeEngine = new CodeEngine(description, examples, { maxTokens: 1000 });
+```
 
 ## Contributing
 
