@@ -86,7 +86,7 @@ describe("Code prompt should truncate when too long", () => {
   ];
 
   test("should remove only dialog prompt when too long", () => {
-    let promptEngine = new CodeEngine(description, examples, undefined, {
+    let promptEngine = new CodeEngine(description, examples, {
       maxTokens: 180,
     });
     promptEngine.addInteraction({
@@ -100,7 +100,7 @@ describe("Code prompt should truncate when too long", () => {
   });
 
   test("should remove first dialog prompt when too long", () => {
-    let promptEngine = new CodeEngine(description, examples, undefined, {
+    let promptEngine = new CodeEngine(description, examples, {
       maxTokens: 260,
     });
     promptEngine.addInteractions([

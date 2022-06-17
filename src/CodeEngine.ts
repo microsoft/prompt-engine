@@ -27,8 +27,8 @@ export class CodeEngine implements IPromptEngine {
   constructor(
     description: string = "",
     examples: Interaction[] = [],
+    modelConfig: ModelConfig = DefaultModelConfig,
     languageConfig: LanguageConfig = JavaScriptConfig,
-    modelConfig: ModelConfig = DefaultModelConfig
   ) {
     this.description = description;
     this.examples = examples;
