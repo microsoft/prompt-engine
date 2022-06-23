@@ -1,12 +1,12 @@
 // Tests for NLToCode.ts using Jest
 
-import { CodeEngine } from "../src/CodeEngine";
+import { PromptEngine } from "../src/PromptEngine";
 
 // Test creation of an empty NL-to-Code prompt
 describe("Empty NL-to-Code Prompt should produce the correct context and prompt", () => {
-  let promptEngine: CodeEngine;
+  let promptEngine: PromptEngine;
   beforeEach(() => {
-    promptEngine = new CodeEngine();
+    promptEngine = new PromptEngine();
   });
 
   test("should create an empty Code prompt", () => {
@@ -23,7 +23,7 @@ describe("Empty NL-to-Code Prompt should produce the correct context and prompt"
 
 // Test Code Engine with just description (no examples - zero shot)
 describe("Initialized NL-to-Code Engine should produce the correct prompt", () => {
-  let promptEngine: CodeEngine;
+  let promptEngine: PromptEngine;
   let description =
     "The following are examples of natural language commands and the code necessary to accomplish them";
 
@@ -33,12 +33,12 @@ describe("Initialized NL-to-Code Engine should produce the correct prompt", () =
   ];
 
   test("should create an NL-to-Code prompt with description", () => {
-    let promptEngine = new CodeEngine(description);
+    let promptEngine = new PromptEngine(description);
     let prompt = promptEngine.craftPrompt("Make a cube");
     expect(prompt).toBe(`/* ${description} */\n\n/* Make a cube */\n`);
   });
 
-  promptEngine = new CodeEngine(description, examples);
+  promptEngine = new PromptEngine(description, examples);
 
   test("should create an NL-to-Code prompt with description and examples", () => {
     let prompt = promptEngine.craftPrompt("Make a cylinder");
@@ -86,7 +86,7 @@ describe("Code prompt should truncate when too long", () => {
   ];
 
   test("should remove only dialog prompt when too long", () => {
-    let promptEngine = new CodeEngine(description, examples, {
+    let promptEngine = new PromptEngine(description, examples, {
       maxTokens: 180,
     });
     promptEngine.addInteraction({
@@ -100,7 +100,7 @@ describe("Code prompt should truncate when too long", () => {
   });
 
   test("should remove first dialog prompt when too long", () => {
-    let promptEngine = new CodeEngine(description, examples, {
+    let promptEngine = new PromptEngine(description, examples, {
       maxTokens: 260,
     });
     promptEngine.addInteractions([
