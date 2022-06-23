@@ -7,28 +7,28 @@ import {
   Context,
 } from "./types";
 
-export const JavaScriptConfig: PromptConfig = {
-  inputPrefix: "/*",
-  inputPostfix: "*/",
+export const DefaultPromptConfig: PromptConfig = {
+  inputPrefix: "",
+  inputPostfix: "",
   newLineOperator: "\n",
-};
+}
 
 export const DefaultModelConfig: ModelConfig = {
   maxTokens: 4000,
 };
 
 export class PromptEngine implements IPromptEngine {
-  promptConfig: PromptConfig; // Configuration for the prompt engine
-  modelConfig: ModelConfig; // Configuration for the model being used
-  description?: string; // Description of the task for the model
-  examples: Interaction[]; // Few show examples of input -> response for the model
-  dialog: Interaction[]; // Ongoing input responses, updated as the user interacts with the model
+  protected promptConfig: PromptConfig; // Configuration for the prompt engine
+  protected modelConfig: ModelConfig; // Configuration for the model being used
+  protected description?: string; // Description of the task for the model
+  protected examples: Interaction[]; // Few show examples of input -> response for the model
+  protected dialog: Interaction[]; // Ongoing input responses, updated as the user interacts with the model
 
   constructor(
     description: string = "",
     examples: Interaction[] = [],
     modelConfig: ModelConfig = DefaultModelConfig,
-    promptConfig: PromptConfig = JavaScriptConfig
+    promptConfig: PromptConfig = DefaultPromptConfig
   ) {
     this.description = description;
     this.examples = examples;
