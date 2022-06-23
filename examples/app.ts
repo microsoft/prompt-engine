@@ -1,13 +1,13 @@
-import { PromptEngine } from "./PromptEngine";
+import { CodeEngine } from "../src/CodeEngine";
 
-let promptEngine: PromptEngine;
+let promptEngine: CodeEngine;
 let description = "Natural Language Commands to Math Code";
 let examples = [
   { input: "what's 10 plus 18", response: "console.log(10 + 18)" },
   { input: "what's 10 times 18", response: "console.log(10 * 18)" },
 ];
 
-promptEngine = new PromptEngine(description, examples, {
+promptEngine = new CodeEngine(description, examples, {
   maxTokens: 260,
 });
 promptEngine.addInteractions([
