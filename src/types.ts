@@ -1,12 +1,7 @@
 export type Prompt = string;
 export type Context = string;
 
-type ClassificationExample = string;
-
 export interface IPromptEngine {
-  modelConfig?: ModelConfig;
-  description?: string;
-  examples?: Interaction[];
   buildContext: () => Context;
   craftPrompt: (naturalLanguage: string) => Prompt;
 }
@@ -37,6 +32,12 @@ export interface ModelConfig {
 export interface PromptConfig {
   inputPrefix: string;
   inputPostfix: string;
+  newLineOperator: string;
+}
+
+export interface CodePromptConfig {
+  commentOperator: string;
+  closeCommentOperator?: string;
   newLineOperator: string;
 }
 
