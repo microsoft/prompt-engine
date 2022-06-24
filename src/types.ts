@@ -30,6 +30,8 @@ export interface ModelConfig {
 }
 
 export interface PromptConfig {
+  descriptionPrefix: string;
+  descriptionPostfix: string;
   inputPrefix: string;
   inputPostfix: string;
   newLineOperator: string;

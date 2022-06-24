@@ -1,12 +1,5 @@
-import {
-  DefaultModelConfig,
-  PromptEngine,
-} from "./PromptEngine";
-import {
-  Interaction,
-  ModelConfig,
-  CodePromptConfig,
-} from "./types";
+import { DefaultModelConfig, PromptEngine } from "./PromptEngine";
+import { Interaction, ModelConfig, CodePromptConfig } from "./types";
 
 export const JavaScriptConfig: CodePromptConfig = {
   commentOperator: "/*",
@@ -28,6 +21,8 @@ export class CodeEngine extends PromptEngine {
     this.promptConfig = {
       inputPrefix: languageConfig.commentOperator,
       inputPostfix: languageConfig.closeCommentOperator,
+      descriptionPrefix: languageConfig.commentOperator,
+      descriptionPostfix: languageConfig.closeCommentOperator,
       newLineOperator: languageConfig.newLineOperator,
     };
   }

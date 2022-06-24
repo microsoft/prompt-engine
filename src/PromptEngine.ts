@@ -10,11 +10,13 @@ import {
 export const DefaultPromptConfig: PromptConfig = {
   inputPrefix: "",
   inputPostfix: "",
+  descriptionPrefix: "",
+  descriptionPostfix: "",
   newLineOperator: "\n",
-}
+};
 
 export const DefaultModelConfig: ModelConfig = {
-  maxTokens: 4000,
+  maxTokens: 4096,
 };
 
 export class PromptEngine implements IPromptEngine {
@@ -42,11 +44,11 @@ export class PromptEngine implements IPromptEngine {
    * @param context ongoing context to add description to
    * @returns context with description added to it
    */
-  private addDescription(context: string) {
+  protected insertDescription(context: string) {
     if (this.description) {
-      context += `${this.promptConfig.inputPrefix} ${this.description}`;
-      context += this.promptConfig.inputPostfix
-        ? ` ${this.promptConfig.inputPostfix}`
+      context += `${this.promptConfig.descriptionPrefix} ${this.description}`;
+      context += this.promptConfig.descriptionPostfix
+        ? ` ${this.promptConfig.descriptionPostfix}`
         : "";
       context += this.promptConfig.newLineOperator;
       context += this.promptConfig.newLineOperator;
@@ -61,7 +63,7 @@ export class PromptEngine implements IPromptEngine {
    * @param context ongoing context to add examples to
    * @returns context with examples added to it
    */
-  private addExamples(context: string) {
+  protected insertExamples(context: string) {
     if (this.examples.length > 0) {
       context += this.stringifyInteractions(this.examples);
     }
@@ -72,14 +74,17 @@ export class PromptEngine implements IPromptEngine {
    * @param context ongoing context to add dialogs to
    * @returns context with dialog added to it, only appending the last interactions if the context becomes too long
    */
-  private addDialog(context: string, inputLength?: number) {
+  protected insertInteractions(context: string, inputLength?: number) {
     let dialogString = "";
     let i = this.dialog.length - 1;
     if (i >= 0) {
       let lastInteraction =
         this.stringifyInteraction(this.dialog[i]) + dialogString;
       while (
-        dialogString.length + context.length + lastInteraction.length + inputLength <=
+        dialogString.length +
+          context.length +
+          lastInteraction.length +
+          inputLength <=
           this.modelConfig.maxTokens &&
         i >= 0
       ) {
@@ -103,7 +108,7 @@ export class PromptEngine implements IPromptEngine {
   }
 
   /**
-   * 
+   *
    * @param interaction Interaction to add to the ongoing dialog
    */
   public addInteraction(interaction: Interaction) {
@@ -111,7 +116,7 @@ export class PromptEngine implements IPromptEngine {
   }
 
   /**
-   * 
+   *
    * @param interactions Interactions to add to the ongoing dialog
    */
   public addInteractions(interactions: Interaction[]) {
@@ -124,45 +129,45 @@ export class PromptEngine implements IPromptEngine {
    * Removes the first interaction from the dialog
    */
   public removeFirstInteraction() {
-    this.dialog.shift();
+    return this.dialog.shift();
   }
 
   /**
    * Removes the last interaction from the dialog
    */
   public removeLastInteraction() {
-    this.dialog.pop();
+    return this.dialog.pop();
   }
 
   /**
-   * 
+   *
    * @param inputLength Length of the input string - used to determine how long the context can be
    * @returns A context string containing description, examples and ongoing interactions with the model
    */
   public buildContext(inputLength?: number): Context {
     let context = "";
-    context = this.addDescription(context);
-    context = this.addExamples(context);
+    context = this.insertDescription(context);
+    context = this.insertExamples(context);
 
     // If the context is too long without dialogs, throw an error
     if (context.length > this.modelConfig.maxTokens) {
       this.throwContextOverflowError();
     }
 
-    context = this.addDialog(context, inputLength);
+    context = this.insertInteractions(context, inputLength);
     return context;
   }
 
   /**
    *
-   * @param naturalLanguage Natural Language input from user
+   * @param input Natural Language input from user
    * @returns A prompt string to pass a language model. This prompt
    * includes the description of the task and few shot examples of input -> response.
    * It then appends the current interaction history and the current input,
    * to effectively coax a new response from the model.
    */
-  public craftPrompt(naturalLanguage: string): Prompt {
-    let formattedInput = this.formatInput(naturalLanguage);
+  public craftPrompt(input: string): Prompt {
+    let formattedInput = this.formatInput(input);
     let prompt = this.buildContext(formattedInput.length);
     prompt += formattedInput;
     return prompt;
@@ -185,7 +190,7 @@ export class PromptEngine implements IPromptEngine {
     return formatted;
   };
 
-  private stringifyInteraction = (interaction: Interaction) => {
+  protected stringifyInteraction = (interaction: Interaction) => {
     let stringInteraction = "";
     stringInteraction += this.formatInput(interaction.input);
     stringInteraction += interaction.response;
@@ -194,7 +199,7 @@ export class PromptEngine implements IPromptEngine {
     return stringInteraction;
   };
 
-  private stringifyInteractions = (interactions: Interaction[]) => {
+  protected stringifyInteractions = (interactions: Interaction[]) => {
     let stringInteractions = "";
     interactions.forEach((interaction) => {
       stringInteractions += this.stringifyInteraction(interaction);
