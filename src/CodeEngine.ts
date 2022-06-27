@@ -21,6 +21,8 @@ export class CodeEngine extends PromptEngine {
     this.promptConfig = {
       inputPrefix: languageConfig.commentOperator,
       inputPostfix: languageConfig.closeCommentOperator,
+      outputPrefix: "",
+      outputPostfix: "",
       descriptionPrefix: languageConfig.commentOperator,
       descriptionPostfix: languageConfig.closeCommentOperator,
       newLineOperator: languageConfig.newLineOperator,
