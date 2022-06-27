@@ -150,8 +150,8 @@ export class PromptEngine implements IPromptEngine {
 
   /**
    *
-   * @param input Natural Language input from user
-   * @param response Natural Language response from model
+   * @param input Example input to add to the examples
+   * @param response Example output to add to the examples
    */
      public addExample(input: string, response: string) {
       this.examples.push({
