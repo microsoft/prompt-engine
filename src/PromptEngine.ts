@@ -138,10 +138,14 @@ export class PromptEngine implements IPromptEngine {
 
   /**
    *
-   * @param interaction Interaction to add to the ongoing dialog
+   * @param input Interaction input to add to the ongoing dialog
+   * @param response Interaction response to add to the ongoing dialog
    */
-  public addInteraction(interaction: Interaction) {
-    this.dialog.push(interaction);
+  public addInteraction(input: string, response: string) {
+    this.dialog.push({
+      input: input,
+      response: response,
+    });
   }
 
   /**
@@ -150,7 +154,7 @@ export class PromptEngine implements IPromptEngine {
    */
   public addInteractions(interactions: Interaction[]) {
     interactions.forEach((interaction) => {
-      this.addInteraction(interaction);
+      this.addInteraction(interaction.input, interaction.response);
     });
   }
 
@@ -167,6 +171,18 @@ export class PromptEngine implements IPromptEngine {
   public removeLastInteraction() {
     return this.dialog.pop();
   }
+
+  /**
+   *
+   * @param input Example input to add to the examples
+   * @param response Example output to add to the examples
+   */
+     public addExample(input: string, response: string) {
+      this.examples.push({
+        input: input,
+        response: response,
+      });
+    }
 
   /**
    *
