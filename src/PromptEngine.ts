@@ -10,6 +10,8 @@ import {
 export const DefaultPromptConfig: PromptConfig = {
   inputPrefix: "",
   inputPostfix: "",
+  outputPrefix: "",
+  outputPostfix: "",
   descriptionPrefix: "",
   descriptionPostfix: "",
   newLineOperator: "\n",
@@ -46,7 +48,10 @@ export class PromptEngine implements IPromptEngine {
    */
   protected insertDescription(context: string) {
     if (this.description) {
-      context += `${this.promptConfig.descriptionPrefix} ${this.description}`;
+      context += this.promptConfig.descriptionPrefix
+        ? `${this.promptConfig.descriptionPrefix} `
+        : "";
+      context += `${this.description}`;
       context += this.promptConfig.descriptionPostfix
         ? ` ${this.promptConfig.descriptionPostfix}`
         : "";
@@ -179,10 +184,27 @@ export class PromptEngine implements IPromptEngine {
    */
   private formatInput = (naturalLanguage: string): string => {
     let formatted = "";
-    formatted += this.promptConfig.inputPrefix;
-    formatted += ` ${naturalLanguage}`;
+    formatted += this.promptConfig.inputPrefix
+      ? `${this.promptConfig.inputPrefix} `
+      : "";
+    formatted += `${naturalLanguage}`;
     formatted += this.promptConfig.inputPostfix
       ? ` ${this.promptConfig.inputPostfix}`
+      : "";
+    formatted += this.promptConfig.newLineOperator
+      ? this.promptConfig.newLineOperator
+      : "";
+    return formatted;
+  };
+
+  private formatOutput = (output: string): string => {
+    let formatted = "";
+    formatted += this.promptConfig.outputPrefix
+      ? `${this.promptConfig.outputPrefix} `
+      : "";
+    formatted += `${output}`;
+    formatted += this.promptConfig.outputPostfix
+      ? ` ${this.promptConfig.outputPostfix}`
       : "";
     formatted += this.promptConfig.newLineOperator
       ? this.promptConfig.newLineOperator
@@ -193,8 +215,7 @@ export class PromptEngine implements IPromptEngine {
   protected stringifyInteraction = (interaction: Interaction) => {
     let stringInteraction = "";
     stringInteraction += this.formatInput(interaction.input);
-    stringInteraction += interaction.response;
-    stringInteraction += this.promptConfig.newLineOperator;
+    stringInteraction += this.formatOutput(interaction.response);
     stringInteraction += this.promptConfig.newLineOperator;
     return stringInteraction;
   };

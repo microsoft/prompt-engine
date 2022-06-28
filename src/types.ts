@@ -34,6 +34,8 @@ export interface PromptConfig {
   descriptionPostfix: string;
   inputPrefix: string;
   inputPostfix: string;
+  outputPrefix: string;
+  outputPostfix: string;
   newLineOperator: string;
 }
 
