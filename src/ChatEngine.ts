@@ -1,8 +1,8 @@
 import { DefaultModelConfig, PromptEngine } from "./PromptEngine";
 import { Interaction, ModelConfig, ChatConfig } from "./types";
 
-export const JavaScriptConfig: ChatConfig = {
-  userName: "YOU",
+export const DefaultChatConfig: ChatConfig = {
+  userName: "USER",
   botName: "BOT",
   newLineOperator: "\n",
 };
@@ -14,7 +14,7 @@ export class ChatEngine extends PromptEngine {
     description: string = "",
     examples: Interaction[] = [],
     modelConfig: ModelConfig = DefaultModelConfig,
-    languageConfig: ChatConfig = JavaScriptConfig
+    languageConfig: ChatConfig = DefaultChatConfig
   ) {
     super(description, examples, modelConfig);
     this.languageConfig = languageConfig;
