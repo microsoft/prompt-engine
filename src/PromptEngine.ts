@@ -26,17 +26,20 @@ export class PromptEngine implements IPromptEngine {
   protected modelConfig: ModelConfig; // Configuration for the model being used
   protected description?: string; // Description of the task for the model
   protected examples: Interaction[]; // Few show examples of input -> response for the model
+  protected flowResetText?: string; // Flow Reset Text to reset the execution flow and any ongoing remnants of the examples
   protected dialog: Interaction[]; // Ongoing input responses, updated as the user interacts with the model
 
   constructor(
     description: string = "",
     examples: Interaction[] = [],
     modelConfig: ModelConfig = DefaultModelConfig,
+    flowResetText: string = "",
     promptConfig: PromptConfig = DefaultPromptConfig
   ) {
     this.description = description;
     this.examples = examples;
     this.modelConfig = modelConfig;
+    this.flowResetText = flowResetText;
     this.promptConfig = promptConfig;
     this.dialog = [];
   }
@@ -73,6 +76,27 @@ export class PromptEngine implements IPromptEngine {
       context += this.stringifyInteractions(this.examples);
     }
     return context;
+  }
+
+  /**
+   *
+   * @param context ongoing context to add description to
+   * @returns context with description added to it
+   */
+   protected insertFlowResetText(context: string) {
+    if (this.flowResetText) {
+      context += this.promptConfig.descriptionPrefix
+        ? `${this.promptConfig.descriptionPrefix} `
+        : "";
+      context += `${this.flowResetText}`;
+      context += this.promptConfig.descriptionPostfix
+        ? ` ${this.promptConfig.descriptionPostfix}`
+        : "";
+      context += this.promptConfig.newLineOperator;
+      context += this.promptConfig.newLineOperator;
+    }
+    return context;
+    
   }
 
   /**
@@ -169,7 +193,7 @@ export class PromptEngine implements IPromptEngine {
     let context = "";
     context = this.insertDescription(context);
     context = this.insertExamples(context);
-
+    context = this.insertFlowResetText(context);
     // If the context is too long without dialogs, throw an error
     if (context.length > this.modelConfig.maxTokens) {
       this.throwContextOverflowError();

@@ -14,9 +14,10 @@ export class CodeEngine extends PromptEngine {
     description: string = "",
     examples: Interaction[] = [],
     modelConfig: ModelConfig = DefaultModelConfig,
+    flowResetText: string = "",
     languageConfig: CodePromptConfig = JavaScriptConfig
   ) {
-    super(description, examples, modelConfig);
+    super(description, examples, modelConfig, flowResetText);
     this.languageConfig = languageConfig;
     this.promptConfig = {
       inputPrefix: languageConfig.commentOperator,
