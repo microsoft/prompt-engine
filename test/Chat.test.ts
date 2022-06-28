@@ -50,10 +50,8 @@ describe("Empty NL-to-Code Prompt should produce the correct context and prompt"
   });
 
   test("should add an interaction to chat prompt", () => {
-    chatEngine.addInteraction({
-      input: "what is a rectangle",
-      response: "a rectangle is a rectangle",
-    });
+    chatEngine.addInteraction("what is a rectangle",
+                              "a rectangle is a rectangle");
     let prompt = chatEngine.craftPrompt("what is a cylinder");
     expect(prompt).toBe(
       `${description}\n\nUSER: What is a cube?\nBOT: a symmetrical three-dimensional shape, either solid or hollow, contained by six equal squares\n\nUSER: What is a sphere?\nBOT: a round solid figure, or its surface, with every point on its surface equidistant from its centre\n\nUSER: what is a rectangle\nBOT: a rectangle is a rectangle\n\nUSER: what is a cylinder\n`
