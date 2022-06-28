@@ -17,7 +17,7 @@ describe("Empty chat Prompt should produce the correct context and prompt", () =
   test("should create an chat prompt with no description or examples", () => {
     let prompt = chatEngine.craftPrompt("Make a cube");
     console.log(prompt);
-    expect(prompt).toBe("YOU: Make a cube\n");
+    expect(prompt).toBe("USER: Make a cube\n");
   });
 });
 
@@ -36,7 +36,7 @@ describe("Empty NL-to-Code Prompt should produce the correct context and prompt"
   test("should create a chat prompt with description", () => {
     let chatEngine = new ChatEngine(description);
     let prompt = chatEngine.craftPrompt("what is a rectangle");
-    expect(prompt).toBe(`${description}\n\nYOU: what is a rectangle\n`);
+    expect(prompt).toBe(`${description}\n\nUSER: what is a rectangle\n`);
   });
 
   
@@ -45,7 +45,7 @@ describe("Empty NL-to-Code Prompt should produce the correct context and prompt"
   test("should create a chat prompt with description and examples", () => {
     let prompt = chatEngine.craftPrompt("what is a rectangle");
     expect(prompt).toBe(
-      `${description}\n\nYOU: What is a cube?\nBOT: a symmetrical three-dimensional shape, either solid or hollow, contained by six equal squares\n\nYOU: What is a sphere?\nBOT: a round solid figure, or its surface, with every point on its surface equidistant from its centre\n\nYOU: what is a rectangle\n`
+      `${description}\n\nUSER: What is a cube?\nBOT: a symmetrical three-dimensional shape, either solid or hollow, contained by six equal squares\n\nUSER: What is a sphere?\nBOT: a round solid figure, or its surface, with every point on its surface equidistant from its centre\n\nUSER: what is a rectangle\n`
     );
   });
 
@@ -54,7 +54,7 @@ describe("Empty NL-to-Code Prompt should produce the correct context and prompt"
                               "a rectangle is a rectangle");
     let prompt = chatEngine.craftPrompt("what is a cylinder");
     expect(prompt).toBe(
-      `${description}\n\nYOU: What is a cube?\nBOT: a symmetrical three-dimensional shape, either solid or hollow, contained by six equal squares\n\nYOU: What is a sphere?\nBOT: a round solid figure, or its surface, with every point on its surface equidistant from its centre\n\nYOU: what is a rectangle\nBOT: a rectangle is a rectangle\n\nYOU: what is a cylinder\n`
+      `${description}\n\nUSER: What is a cube?\nBOT: a symmetrical three-dimensional shape, either solid or hollow, contained by six equal squares\n\nUSER: What is a sphere?\nBOT: a round solid figure, or its surface, with every point on its surface equidistant from its centre\n\nUSER: what is a rectangle\nBOT: a rectangle is a rectangle\n\nUSER: what is a cylinder\n`
     );
   });
 
