@@ -205,6 +205,16 @@ export class PromptEngine implements IPromptEngine {
 
   /**
    *
+   * @returns A reset context string containing description and examples without any previous interactions with the model
+   */
+  public resetContext(): Context {
+    
+    this.dialog = [];
+    return this.buildContext();
+  }
+
+  /**
+   *
    * @param input Natural Language input from user
    * @returns A prompt string to pass a language model. This prompt
    * includes the description of the task and few shot examples of input -> response.

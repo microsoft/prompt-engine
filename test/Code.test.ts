@@ -123,14 +123,46 @@ describe("Initialized NL-to-Code Engine should produce the correct prompt", () =
   let flowResetText = 
     "Ignore the previous objects and start over with a new object";
 
-  let examples = [
-    { input: "Make a cube", response: "cube = makeCube();" },
-    { input: "Make a sphere", response: "sphere  = makeSphere();" },
-  ];
-
   test("should create an NL-to-Code prompt with description", () => {
     let codeEngine = new CodeEngine(description, [], {maxTokens: 1024}, flowResetText);
     let prompt = codeEngine.craftPrompt("Make a cube");
     expect(prompt).toBe(`/* ${description} */\n\n/* ${flowResetText} */\n\n/* Make a cube */\n`);
+  });
+});
+
+// Test Code Engine with descriptions, examples, flow reset text and interactions
+
+describe("Initialized NL-to-Code Engine should produce the correct prompt", () => {
+  let codeEngine: CodeEngine;
+  let description =
+    "The following are examples of natural language commands and the code necessary to accomplish them";
+
+  test("should create an NL-to-Code prompt with description", () => {
+    let codeEngine = new CodeEngine(description);
+
+    codeEngine.addInteractions([
+      { 
+        input: "Make a cube", 
+        response: "cube = makeCube();" 
+      },
+      { 
+        input: "Make a sphere", 
+        response: "sphere = makeSphere();" 
+      }
+    ]);
+
+    let prompt = codeEngine.craftPrompt("Make a cylinder");
+    expect(prompt).toBe(
+      `/* ${description} */\n\n/* Make a cube */\ncube = makeCube();\n\n/* Make a sphere */\nsphere = makeSphere();\n\n/* Make a cylinder */\n`
+    );
+
+    codeEngine.resetContext()
+
+
+    prompt = codeEngine.craftPrompt("Make a cylinder");
+
+    expect(prompt).toBe(
+      `/* ${description} */\n\n/* Make a cylinder */\n`
+    );
   });
 });
