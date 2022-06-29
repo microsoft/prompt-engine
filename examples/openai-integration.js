@@ -4,7 +4,7 @@ const { CodeEngine, JavaScriptConfig } = require("../out/CodeEngine");
 async function getCompletion(promptEngine, command, openai_key, engine_id="code-davinci-002" ) {      
     let prompt = promptEngine.craftPrompt(command);
 
-    // To learn more about making requests to OpanAI API, please refer to https://beta.openai.com/docs/api-reference/making-requests.
+    // To learn more about making requests to OpenAI API, please refer to https://beta.openai.com/docs/api-reference/making-requests.
     // Here we use the following endpoint pattern for engine selection.
     // https://api.openai.com/v1/engines/{engine_id}/completions
     // You can switch to different engines that are available to you. Learn more about engines - https://beta.openai.com/docs/engines/engines
@@ -37,7 +37,6 @@ async function getCompletion(promptEngine, command, openai_key, engine_id="code-
     let code = json.choices[0].text;
 
     promptEngine.addInteraction(command, code);
-     
 
     return code;
 }
