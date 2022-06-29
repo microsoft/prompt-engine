@@ -1,21 +1,21 @@
 import { DefaultModelConfig, PromptEngine } from "./PromptEngine";
-import { Interaction, ModelConfig, CodePromptConfig } from "./types";
+import { Interaction, IModelConfig, ICodePromptConfig } from "./types";
 
-export const JavaScriptConfig: CodePromptConfig = {
+export const JavaScriptConfig: ICodePromptConfig = {
   commentOperator: "/*",
   closeCommentOperator: "*/",
   newLineOperator: "\n",
 };
 
 export class CodeEngine extends PromptEngine {
-  languageConfig: CodePromptConfig;
+  languageConfig: ICodePromptConfig;
 
   constructor(
     description: string = "",
     examples: Interaction[] = [],
-    modelConfig: ModelConfig = DefaultModelConfig,
+    modelConfig: IModelConfig = DefaultModelConfig,
     flowResetText: string = "",
-    languageConfig: CodePromptConfig = JavaScriptConfig
+    languageConfig: ICodePromptConfig = JavaScriptConfig
   ) {
     super(description, examples, modelConfig, flowResetText);
     this.languageConfig = languageConfig;

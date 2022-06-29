@@ -1,13 +1,13 @@
 import {
   Interaction,
-  PromptConfig,
-  ModelConfig,
+  IPromptConfig,
+  IModelConfig,
   Prompt,
   IPromptEngine,
   Context,
 } from "./types";
 
-export const DefaultPromptConfig: PromptConfig = {
+export const DefaultPromptConfig: IPromptConfig = {
   inputPrefix: "",
   inputPostfix: "",
   outputPrefix: "",
@@ -17,13 +17,13 @@ export const DefaultPromptConfig: PromptConfig = {
   newLineOperator: "\n",
 };
 
-export const DefaultModelConfig: ModelConfig = {
+export const DefaultModelConfig: IModelConfig = {
   maxTokens: 4096,
 };
 
 export class PromptEngine implements IPromptEngine {
-  protected promptConfig: PromptConfig; // Configuration for the prompt engine
-  protected modelConfig: ModelConfig; // Configuration for the model being used
+  protected promptConfig: IPromptConfig; // Configuration for the prompt engine
+  protected modelConfig: IModelConfig; // Configuration for the model being used
   protected description?: string; // Description of the task for the model
   protected examples: Interaction[]; // Few show examples of input -> response for the model
   protected flowResetText?: string; // Flow Reset Text to reset the execution flow and any ongoing remnants of the examples
@@ -32,9 +32,9 @@ export class PromptEngine implements IPromptEngine {
   constructor(
     description: string = "",
     examples: Interaction[] = [],
-    modelConfig: ModelConfig = DefaultModelConfig,
+    modelConfig: IModelConfig = DefaultModelConfig,
     flowResetText: string = "",
-    promptConfig: PromptConfig = DefaultPromptConfig
+    promptConfig: IPromptConfig = DefaultPromptConfig
   ) {
     this.description = description;
     this.examples = examples;

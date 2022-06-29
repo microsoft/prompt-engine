@@ -2,7 +2,8 @@
   "name": "prompt-engine",
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "out/index.js",
+  "types": "out/index.d.ts",
   "scripts": {
     "start": "node out/app.js",
     "prestart": "npm run build",

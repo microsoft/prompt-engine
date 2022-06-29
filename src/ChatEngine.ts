@@ -1,20 +1,20 @@
 import { DefaultModelConfig, PromptEngine } from "./PromptEngine";
-import { Interaction, ModelConfig, ChatConfig } from "./types";
+import { Interaction, IModelConfig, IChatConfig } from "./types";
 
-export const DefaultChatConfig: ChatConfig = {
+export const DefaultChatConfig: IChatConfig = {
   userName: "USER",
   botName: "BOT",
   newLineOperator: "\n",
 };
 
 export class ChatEngine extends PromptEngine {
-  languageConfig: ChatConfig;
+  languageConfig: IChatConfig;
 
   constructor(
     description: string = "",
     examples: Interaction[] = [],
-    modelConfig: ModelConfig = DefaultModelConfig,
-    languageConfig: ChatConfig = DefaultChatConfig
+    modelConfig: IModelConfig = DefaultModelConfig,
+    languageConfig: IChatConfig = DefaultChatConfig
   ) {
     super(description, examples, modelConfig);
     this.languageConfig = languageConfig;

@@ -8,6 +8,7 @@
     "outDir": "out",
     "sourceMap": true,
     "skipLibCheck": true,
-    "types": ["@types/jest"]
+    "types": ["@types/jest"],
+    "declaration": true
   }
 }
