@@ -6,30 +6,16 @@ export interface IPromptEngine {
   craftPrompt: (naturalLanguage: string) => Prompt;
 }
 
-export interface CodeEngine extends IPromptEngine {	
-  languageConfig: PromptConfig;
-  examples?: Interaction[];
-  dialog: Interaction[];
-  addInteraction: (interaction: Interaction) => void;
-}
-
-export interface ChatEngine extends IPromptEngine {
-  chatConfig: ChatConfig;
-  examples?: Interaction[];
-  dialog: Interaction[];
-  addInteraction: (interaction: Interaction) => void;
-}
-
 export interface Interaction {
   input: string;
   response: string;
 }
 
-export interface ModelConfig {
+export interface IModelConfig {
   maxTokens: number;
 }
 
-export interface PromptConfig {
+export interface IPromptConfig {
   descriptionPrefix: string;
   descriptionPostfix: string;
   inputPrefix: string;
@@ -39,13 +25,13 @@ export interface PromptConfig {
   newLineOperator: string;
 }
 
-export interface CodePromptConfig {
+export interface ICodePromptConfig {
   commentOperator: string;
   closeCommentOperator?: string;
   newLineOperator: string;
 }
 
-export interface ChatConfig {
+export interface IChatConfig {
   userName: string;
   botName: string;
   newLineOperator: string;
