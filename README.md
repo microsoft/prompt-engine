@@ -103,7 +103,7 @@ console.log(1018 * Math.pow(4, 9));
 
 With this context, the code generation model has the dialog context needed to understand what we mean by the query. In this case, the model would correctly generate `console.log(1018 * Math.pow(4, 8));`.
 
-## Chat Engine
+### Chat Engine
 
 Just like Code Engine, Chat Engine creates prompts with descriptions and examples. The difference is that Chat Engine creates prompts for dialog scenarios, where both the user and the model use natural language. The `ChatEngine` constructor takes an optional `chatConfig` argument, which allows you to define the name of a user and chatbot in a multi-turn dialog: 
 
