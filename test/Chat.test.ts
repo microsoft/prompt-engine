@@ -1,4 +1,4 @@
-// Tests for NLToCode.ts using Jest
+// Tests for Chat Engine using Jest
 
 import { ChatEngine } from "../src/ChatEngine";
 
@@ -9,7 +9,7 @@ describe("Empty chat Prompt should produce the correct context and prompt", () =
     chatEngine = new ChatEngine();
   });
 
-  test("should create an empty Code prompt", () => {
+  test("should create an empty chat prompt", () => {
     let context = chatEngine.buildContext();
     expect(context).toBe("");
   });
@@ -22,11 +22,11 @@ describe("Empty chat Prompt should produce the correct context and prompt", () =
 });
 
 // Test creation of a chat prompt with input and response
-describe("Empty NL-to-Code Prompt should produce the correct context and prompt", () => {
+describe("Empty Chat Prompt should produce the correct context and prompt", () => {
   let chatEngine: ChatEngine;
 
   let description =
-    "The following are examples of natural language commands and the code necessary to accomplish them";
+    "The following is a conversation with a bot about shapes";
 
   let examples = [
     { input: "What is a cube?", response: "a symmetrical three-dimensional shape, either solid or hollow, contained by six equal squares" },
