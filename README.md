@@ -75,7 +75,7 @@ For multi-turn scenarios, where past conversations influences the next turn, Cod
 
 ```js
 ...
-// Assumes existsence of code generation model
+// Assumes existence of code generation model
 let code = model.generateCode(prompt);
 
 // Adds interaction
@@ -88,7 +88,7 @@ codeEngine.addInteraction({
 Now new prompts will include the latest NL->Code interaction:
 
 ```js
-codeEngine.createPrompt("double that");
+codeEngine.createPrompt("How about the 8th power?");
 ```
 
 Produces a prompt identical to the one above, but with the NL->Code dialog history:
