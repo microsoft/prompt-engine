@@ -79,10 +79,7 @@ For multi-turn scenarios, where past conversations influences the next turn, Cod
 let code = model.generateCode(prompt);
 
 // Adds interaction
-codeEngine.addInteraction({
-    input: query,
-    response: code
-});
+codeEngine.addInteraction(query, code);
 ```
 
 Now new prompts will include the latest NL->Code interaction:
