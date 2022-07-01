@@ -156,15 +156,15 @@ let codeEngine = new CodeEngine(description, examples, { maxTokens: 1000 });
 
 The following are the functions available on the `PromptEngine` class and those that inherit from it:
 
-| Command | Parameters | Description |
-|--|--|--|
-| `buildContext` | None | Constructs and return the context with parameters provided to the Prompt Engine |
-| `craftPrompt` | Prompt: string | Combines the context from `buildContext` with a query to create a prompt |
-| `addExample` | interaction: Interaction(input: string, response: string) | Adds the given example to the examples |
-| `addInteraction` | interaction: Interaction(input: string, response: string) | Adds the given interaction to the dialog |
-| `removeFirstInteraction` | None | Removes the first interaction in the dialog |
-| `removeLastInteraction` | None | Removes the last interaction added to the dialog |
-| `resetContext` | None | Removes all interactions from the dialog, effectively resetting the context to just description and examples |
+| Command | Parameters | Description | Returns |
+|--|--|--|--|
+| `buildContext` | None | Constructs and return the context with parameters provided to the Prompt Engine | Context: string |
+| `craftPrompt` | Prompt: string | Combines the context from `buildContext` with a query to create a prompt | Prompt: string |
+| `addExample` | interaction: Interaction(input: string, response: string) | Adds the given example to the examples | None |
+| `addInteraction` | interaction: Interaction(input: string, response: string) | Adds the given interaction to the dialog | None |
+| `removeFirstInteraction` | None | Removes and returns the first interaction in the dialog | Interaction: string |
+| `removeLastInteraction` | None | Removes and returns the last interaction added to the dialog | Interaction: string |
+| `resetContext` | None | Removes all interactions from the dialog, effectively resetting the context to just description and examples | None |
 
 
 ## Contributing
