@@ -1,4 +1,4 @@
-// Tests for NLToCode.ts using Jest
+// Tests for Code Engine using Jest
 
 import { CodeEngine } from "../src/CodeEngine";
 
