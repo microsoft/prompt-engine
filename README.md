@@ -167,12 +167,12 @@ The following are the functions available on the `PromptEngine` class and those 
 | Command | Parameters | Description | Returns |
 |--|--|--|--|
 | `buildContext` | None | Constructs and return the context with parameters provided to the Prompt Engine | Context: string |
-| `craftPrompt` | Prompt: string | Combines the context from `buildContext` with a query to create a prompt | Prompt: string |
+| `buildPrompt` | Prompt: string | Combines the context from `buildContext` with a query to create a prompt | Prompt: string |
 | `addExample` | interaction: Interaction(input: string, response: string) | Adds the given example to the examples | None |
 | `addInteraction` | interaction: Interaction(input: string, response: string) | Adds the given interaction to the dialog | None |
 | `removeFirstInteraction` | None | Removes and returns the first interaction in the dialog | Interaction: string |
 | `removeLastInteraction` | None | Removes and returns the last interaction added to the dialog | Interaction: string |
-| `resetContext` | None | Removes all interactions from the dialog, effectively resetting the context to just description and examples | None |
+| `resetContext` | None | Removes all interactions from the dialog, returning the reset context | Context:string |
 
 
 ## Contributing

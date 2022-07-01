@@ -23,7 +23,7 @@ promptEngine.removeLastInteraction()
 promptEngine.addInteraction("What is the maximum speed an SUV from a performance brand can achieve?", 
 "Some performance SUVs can reach speeds over 150mph.");
 
-const outputPrompt = promptEngine.craftPrompt("Can some cars reach higher speeds than that?");
+const outputPrompt = promptEngine.buildPrompt("Can some cars reach higher speeds than that?");
 
 console.log("PROMPT\n\n" + outputPrompt);
 console.log("PROMPT LENGTH: " + outputPrompt.length);
