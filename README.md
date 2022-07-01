@@ -155,6 +155,21 @@ You can specify the maximum tokens allowed in your prompt by passing a `maxToken
 let codeEngine = new CodeEngine(description, examples, { maxTokens: 1000 });
 ```
 
+## Available Functions
+
+The following are the functions available on the `PromptEngine` class and those that inherit from it:
+
+| Command | Parameters | Description |
+|--|--|--|
+| `buildContext` | None | Constructs and return the context with parameters provided to the Prompt Engine |
+| `craftPrompt` | Prompt: string | Combines the context from `buildContext` with a query to create a prompt |
+| `addExample` | interaction: Interaction(input: string, response: string) | Adds the given example to the examples |
+| `addInteraction` | interaction: Interaction(input: string, response: string) | Adds the given interaction to the dialog |
+| `removeFirstInteraction` | None | Removes the first interaction in the dialog |
+| `removeLastInteraction` | None | Removes the last interaction added to the dialog |
+| `resetContext` | None | Removes all interactions from the dialog, effectively resetting the context to just description and examples |
+
+
 ## Contributing
 
 This project welcomes contributions and suggestions. Most contributions require you to agree to a
