@@ -48,7 +48,15 @@ With our description and our examples, we can go ahead and create our `CodeEngin
 const codeEngine = new CodeEngine(description, examples);
 ```
 
-By default, `CodeEngine` uses JavaScript as the programming language, but you can create prompts for different languages by passing a different `languageConfig` into the constructor.
+By default, `CodeEngine` uses JavaScript as the programming language, but you can create prompts for different languages by passing a different `CodePromptConfig` into the constructor. If, for example, we wanted to produce Python prompts, we could have passed `CodeEngine` a `pythonConfig` specifying the comment operator it should be using:
+
+```js
+const pythonConfig = {
+  commentOperator = "#",
+}
+const codeEngine = new CodeEngine(description, examples, pythonConfig);
+
+```
 
 Now that we have our `CodeEngine`, we can use it to create prompts:
 
