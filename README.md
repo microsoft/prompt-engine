@@ -8,6 +8,8 @@ LLMs like GPT-3 and Codex have continued to push the bounds of what AI is capabl
 
 Prompt engineering can be as simple as formatting a question and passing it to the model, but it can also get quite complex - requiring substantial code to manipulate and update strings. This library aims to make that easier. It also aims to codify patterns and practices around prompt engineering.
 
+See [How to get Codex to produce the code you want](https://microsoft.github.io/prompt-engineering/) article for an example of the prompt engineering patterns this library codifies. 
+
 ## Installation
 
 `npm install prompt-engine`
