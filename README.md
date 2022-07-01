@@ -139,10 +139,7 @@ const prompt = chatEngine.createPrompt(userQuery);
 When passed to a large language model (e.g. GPT-3), the context of the above prompt will help coax a good Marvin-like answer from the model, like "The meaning of life is 42.". As with Code Engine, we can persist this answer and continue the dialog such that the model is aware of the conversation context: 
 
 ```js
-chatEngine.addInteraction({
-    input: userQuery,
-    response: "The meaning of life is 42."
-});
+chatEngine.addInteraction(userQuery, "The meaning of life is 42.");
 ```
 
 ## Managing Prompt Overflow
