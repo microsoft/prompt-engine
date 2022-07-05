@@ -16,7 +16,7 @@ promptEngine.addInteractions([
     response: "Some performance SUVs can reach speeds over 150mph.",
   },
 ]);
-const prompt = promptEngine.craftPrompt("Can some cars reach higher speeds than that?");
+const prompt = promptEngine.buildPrompt("Can some cars reach higher speeds than that?");
 
 console.log("PROMPT\n\n" + prompt);
 console.log("PROMPT LENGTH: " + prompt.length);

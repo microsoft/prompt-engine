@@ -221,7 +221,7 @@ export class PromptEngine implements IPromptEngine {
    * It then appends the current interaction history and the current input,
    * to effectively coax a new response from the model.
    */
-  public craftPrompt(input: string): Prompt {
+  public buildPrompt(input: string): Prompt {
     let formattedInput = this.formatInput(input);
     let prompt = this.buildContext(formattedInput.length);
     prompt += formattedInput;

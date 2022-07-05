@@ -42,12 +42,6 @@ const examples = [
 ];
 ```
 
-With our description and our examples, we can go ahead and create our `CodeEngine`:
-
-```js
-const codeEngine = new CodeEngine(description, examples);
-```
-
 By default, `CodeEngine` uses JavaScript as the programming language, but you can create prompts for different languages by passing a different `CodePromptConfig` into the constructor. If, for example, we wanted to produce Python prompts, we could have passed `CodeEngine` a `pythonConfig` specifying the comment operator it should be using:
 
 ```js
@@ -56,6 +50,12 @@ const pythonConfig = {
 }
 const codeEngine = new CodeEngine(description, examples, pythonConfig);
 
+```
+
+With our description and our examples, we can go ahead and create our `CodeEngine`:
+
+```js
+const codeEngine = new CodeEngine(description, examples);
 ```
 
 Now that we have our `CodeEngine`, we can use it to create prompts:
@@ -154,10 +154,10 @@ chatEngine.addInteraction(userQuery, "The meaning of life is 42.");
 
 Prompts for Large Language Models generally have limited size, depending on the language model being used. Given that prompt-engine can persist dialog history, it is possible for dialogs to get so long that the prompt overflows. The Prompt Engine pattern handles this situation by removing the oldest dialog interaction from the prompt, effectively only remembering the most recent interactions.
 
-You can specify the maximum tokens allowed in your prompt by passing a `maxTokens` parameter when constructing the Code Engine:
+You can specify the maximum tokens allowed in your prompt by passing a `maxTokens` parameter when constructing the config for any prompt engine:
 
 ```js
-let codeEngine = new CodeEngine(description, examples, { maxTokens: 1000 });
+let promptEngine = new PromptEngine(description, examples, { maxTokens: 1000 });
 ```
 
 ## Available Functions
@@ -167,13 +167,14 @@ The following are the functions available on the `PromptEngine` class and those 
 | Command | Parameters | Description | Returns |
 |--|--|--|--|
 | `buildContext` | None | Constructs and return the context with parameters provided to the Prompt Engine | Context: string |
-| `craftPrompt` | Prompt: string | Combines the context from `buildContext` with a query to create a prompt | Prompt: string |
+| `buildPrompt` | Prompt: string | Combines the context from `buildContext` with a query to create a prompt | Prompt: string |
 | `addExample` | interaction: Interaction(input: string, response: string) | Adds the given example to the examples | None |
 | `addInteraction` | interaction: Interaction(input: string, response: string) | Adds the given interaction to the dialog | None |
 | `removeFirstInteraction` | None | Removes and returns the first interaction in the dialog | Interaction: string |
 | `removeLastInteraction` | None | Removes and returns the last interaction added to the dialog | Interaction: string |
-| `resetContext` | None | Removes all interactions from the dialog, effectively resetting the context to just description and examples | None |
+| `resetContext` | None | Removes all interactions from the dialog, returning the reset context | Context:string |
 
+For more examples and insights into using the prompt-engine library, have a look at the [examples](https://github.com/microsoft/prompt-engine/tree/main/examples) folder
 
 ## Contributing
 

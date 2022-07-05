@@ -19,7 +19,7 @@ promptEngine.addInteractions([
     response: "console.log(18 % 10);",
   },
 ]);
-const prompt = promptEngine.craftPrompt("what's 18 to the power of 10");
+const prompt = promptEngine.buildPrompt("what's 18 to the power of 10");
 
 console.log("PROMPT\n\n" + prompt);
 console.log("PROMPT LENGTH: " + prompt.length);

@@ -3,7 +3,7 @@ export type Context = string;
 
 export interface IPromptEngine {
   buildContext: () => Context;
-  craftPrompt: (naturalLanguage: string) => Prompt;
+  buildPrompt: (naturalLanguage: string) => Prompt;
 }
 
 export interface Interaction {
