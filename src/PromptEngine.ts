@@ -5,6 +5,7 @@ import {
   Prompt,
   IPromptEngine,
   Context,
+  Dialog,
 } from "./types";
 
 export const DefaultPromptConfig: IPromptConfig = {
@@ -107,18 +108,13 @@ export class PromptEngine implements IPromptEngine {
     let dialogString = "";
     let i = this.dialog.length - 1;
     if (i >= 0) {
-      let lastInteraction =
-        this.stringifyInteraction(this.dialog[i]) + dialogString;
       while (
         dialogString.length +
           context.length +
-          lastInteraction.length +
           inputLength <=
           this.modelConfig.maxTokens &&
         i >= 0
       ) {
-        lastInteraction =
-          this.stringifyInteraction(this.dialog[i]) + dialogString;
         dialogString = this.stringifyInteraction(this.dialog[i]) + dialogString;
         i--;
       }
@@ -226,6 +222,24 @@ export class PromptEngine implements IPromptEngine {
     let prompt = this.buildContext(formattedInput.length);
     prompt += formattedInput;
     return prompt;
+  }
+
+  /**
+   *
+   * @returns It returns the built interaction history
+   */
+   public buildDialog(): Dialog {
+    let dialogString = "";
+    let i = this.dialog.length - 1;
+    if (i >= 0) {
+      while (
+        i >= 0
+      ) {
+        dialogString = this.stringifyInteraction(this.dialog[i]) + dialogString;
+        i--;
+      }
+    }
+    return dialogString;
   }
 
   /**

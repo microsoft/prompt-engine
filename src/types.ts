@@ -1,5 +1,6 @@
 export type Prompt = string;
 export type Context = string;
+export type Dialog = string;
 
 export interface IPromptEngine {
   buildContext: () => Context;
