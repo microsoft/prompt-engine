@@ -20,6 +20,6 @@
     "typescript": "^4.7.3"
   },
   "dependencies": {
-    "gpt-3-encoder": "^1.1.3"
+    "gpt3-tokenizer": "^1.1.2"
   }
 }

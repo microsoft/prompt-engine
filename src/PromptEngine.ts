@@ -8,7 +8,7 @@ import {
   Dialog,
 } from "./types";
 
-import {encode} from "gpt-3-encoder"
+import GPT3Tokenizer from "gpt3-tokenizer";
 
 export const DefaultPromptConfig: IPromptConfig = {
   inputPrefix: "",
@@ -23,6 +23,8 @@ export const DefaultPromptConfig: IPromptConfig = {
 export const DefaultModelConfig: IModelConfig = {
   maxTokens: 4096,
 };
+
+const tokenizer = new GPT3Tokenizer({ type: 'gpt3' });
 
 export class PromptEngine implements IPromptEngine {
   protected promptConfig: IPromptConfig; // Configuration for the prompt engine
@@ -295,9 +297,9 @@ export class PromptEngine implements IPromptEngine {
   protected assertTokenLimit(context: string = "", user_input: string = "") {
     if (context !== undefined && user_input !== undefined){
       if (context !== ""){
-        let numTokens = encode(context).length;
+        let numTokens = tokenizer.encode(context).text.length;
         if (user_input !== ""){
-          numTokens = encode(context + user_input).length;
+          numTokens = tokenizer.encode(context + user_input).text.length;
         }
         if (numTokens > this.modelConfig.maxTokens){
           return true;
