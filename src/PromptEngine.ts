@@ -8,6 +8,8 @@ import {
   Dialog,
 } from "./types";
 
+import {encode} from "gpt-3-encoder"
+
 export const DefaultPromptConfig: IPromptConfig = {
   inputPrefix: "",
   inputPostfix: "",
@@ -104,18 +106,16 @@ export class PromptEngine implements IPromptEngine {
    * @param context ongoing context to add dialogs to
    * @returns context with dialog added to it, only appending the last interactions if the context becomes too long
    */
-  protected insertInteractions(context: string, inputLength?: number) {
+  protected insertInteractions(context: string, userInput?: string) {
     let dialogString = "";
     let i = this.dialog.length - 1;
     if (i >= 0) {
       while (
-        dialogString.length +
-          context.length +
-          inputLength <=
-          this.modelConfig.maxTokens &&
-        i >= 0
+        i >= 0 &&
+        this.assertTokenLimit(context + this.stringifyInteraction(this.dialog[i]) + dialogString, userInput) === false
       ) {
-        dialogString = this.stringifyInteraction(this.dialog[i]) + dialogString;
+        dialogString = this.stringifyInteraction(this.dialog[i]) + dialogString
+
         i--;
       }
     }
@@ -185,17 +185,17 @@ export class PromptEngine implements IPromptEngine {
    * @param inputLength Length of the input string - used to determine how long the context can be
    * @returns A context string containing description, examples and ongoing interactions with the model
    */
-  public buildContext(inputLength?: number): Context {
+  public buildContext(userInput?: string): Context {
     let context = "";
     context = this.insertDescription(context);
     context = this.insertExamples(context);
     context = this.insertFlowResetText(context);
     // If the context is too long without dialogs, throw an error
-    if (context.length > this.modelConfig.maxTokens) {
+    if (this.assertTokenLimit(context, userInput) === true) {
       this.throwContextOverflowError();
     }
 
-    context = this.insertInteractions(context, inputLength);
+    context = this.insertInteractions(context, userInput);
     return context;
   }
 
@@ -219,7 +219,7 @@ export class PromptEngine implements IPromptEngine {
    */
   public buildPrompt(input: string): Prompt {
     let formattedInput = this.formatInput(input);
-    let prompt = this.buildContext(formattedInput.length);
+    let prompt = this.buildContext(formattedInput);
     prompt += formattedInput;
     return prompt;
   }
@@ -291,4 +291,25 @@ export class PromptEngine implements IPromptEngine {
     });
     return stringInteractions;
   };
+
+  protected assertTokenLimit(context: string = "", user_input: string = "") {
+    if (context !== undefined && user_input !== undefined){
+      if (context !== ""){
+        let numTokens = encode(context).length;
+        if (user_input !== ""){
+          numTokens = encode(context + user_input).length;
+        }
+        if (numTokens > this.modelConfig.maxTokens){
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        return false
+      }
+    } else {
+      return false
+    }
+  }
+
 }

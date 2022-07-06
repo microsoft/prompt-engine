@@ -83,7 +83,7 @@ describe("Code prompt should truncate when too long", () => {
 
   test("should remove only dialog prompt when too long", () => {
     let codeEngine = new CodeEngine(description, examples, {
-      maxTokens: 150,
+      maxTokens: 70,
     });
     codeEngine.addInteraction("what's 18 divided by 10",
                               "console.log(18 / 10);");
@@ -95,13 +95,9 @@ describe("Code prompt should truncate when too long", () => {
 
   test("should remove first dialog prompt when too long", () => {
     let codeEngine = new CodeEngine(description, examples, {
-      maxTokens: 200,
+      maxTokens: 90,
     });
     codeEngine.addInteractions([
-      {
-        input: "what's 18 divided by 10",
-        response: "console.log(18 / 10);",
-      },
       {
         input: "what's 18 factorial 10",
         response: "console.log(18 % 10);",
