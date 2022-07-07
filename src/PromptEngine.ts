@@ -114,7 +114,7 @@ export class PromptEngine implements IPromptEngine {
     if (i >= 0) {
       while (
         i >= 0 &&
-        this.assertTokenLimit(context + this.stringifyInteraction(this.dialog[i]) + dialogString, userInput) === false
+        !this.assertTokenLimit(context + this.stringifyInteraction(this.dialog[i]) + dialogString, userInput)
       ) {
         dialogString = this.stringifyInteraction(this.dialog[i]) + dialogString
 
