@@ -294,12 +294,12 @@ export class PromptEngine implements IPromptEngine {
     return stringInteractions;
   };
 
-  protected assertTokenLimit(context: string = "", user_input: string = "") {
-    if (context !== undefined && user_input !== undefined){
+  protected assertTokenLimit(context: string = "", userInput: string = "") {
+    if (context !== undefined && userInput !== undefined){
       if (context !== ""){
         let numTokens = tokenizer.encode(context).text.length;
-        if (user_input !== ""){
-          numTokens = tokenizer.encode(context + user_input).text.length;
+        if (userInput !== ""){
+          numTokens = tokenizer.encode(context + userInput).text.length;
         }
         if (numTokens > this.modelConfig.maxTokens){
           return true;
