@@ -83,7 +83,7 @@ describe("Code prompt should truncate when too long", () => {
 
   test("should remove only dialog prompt when too long", () => {
     let codeEngine = new CodeEngine(description, examples, {
-      maxTokens: 180,
+      maxTokens: 150,
     });
     codeEngine.addInteraction("what's 18 divided by 10",
                               "console.log(18 / 10);");
@@ -95,7 +95,7 @@ describe("Code prompt should truncate when too long", () => {
 
   test("should remove first dialog prompt when too long", () => {
     let codeEngine = new CodeEngine(description, examples, {
-      maxTokens: 260,
+      maxTokens: 200,
     });
     codeEngine.addInteractions([
       {
@@ -129,6 +129,33 @@ describe("Initialized NL-to-Code Engine should produce the correct prompt", () =
     expect(prompt).toBe(`/* ${description} */\n\n/* ${flowResetText} */\n\n/* Make a cube */\n`);
   });
 });
+
+
+// Test Code Engine to retrieve the built interactions
+describe("Initialized NL-to-Code Engine should produce the correct dialog", () => {
+  let codeEngine: CodeEngine;
+  let description =
+    "The following are examples of natural language commands and the code necessary to accomplish them";
+  let flowResetText = 
+    "Ignore the previous objects and start over with a new object";
+
+  test("should return just the dialog", () => {
+    let codeEngine = new CodeEngine(description, [], {maxTokens: 1024}, flowResetText);
+    codeEngine.addInteractions([
+      { 
+        input: "Make a cube", 
+        response: "cube = makeCube();" 
+      },
+      { 
+        input: "Make a sphere", 
+        response: "sphere = makeSphere();" 
+      }
+    ]);
+    let dialog = codeEngine.buildDialog();
+    expect(dialog).toBe(`/* Make a cube */\ncube = makeCube();\n\n/* Make a sphere */\nsphere = makeSphere();\n\n`);
+  });
+});
+
 
 // Test Code Engine with descriptions, examples, flow reset text and interactions
 
