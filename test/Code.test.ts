@@ -189,3 +189,47 @@ describe("Initialized NL-to-Code Engine should produce the correct prompt", () =
     );
   });
 });
+
+// Test Code Engine with descriptions, examples, flow reset text and interactions without multi turn mode
+
+describe("Initialized NL-to-Code Engine without multi-turn should produce the correct prompt", () => {
+  let codeEngine: CodeEngine;
+  let description =
+    "The following are examples of natural language commands and the code necessary to accomplish them";
+  let examples = [
+      { input: "Make a cube", response: "makeCube();" },
+      { input: "Make a sphere", response: "makeSphere();" },
+    ];
+
+  test("should return a prompt with only the examples with multi turn mode off", () => {
+    let codeEngine = new CodeEngine(description, examples);
+
+    codeEngine.addInteractions([
+      { 
+        input: "Make a cube", 
+        response: "cube = makeCube();" 
+      },
+      { 
+        input: "Make a sphere", 
+        response: "sphere = makeSphere();" 
+      }
+    ]);
+
+    let prompt = codeEngine.buildPrompt("Make a cylinder");
+    expect(prompt).toBe(
+      `/* ${description} */\n\n/* Make a cube */\nmakeCube();\n\n/* Make a sphere */\nmakeSphere();\n\n/* Make a cube */\ncube = makeCube();\n\n/* Make a sphere */\nsphere = makeSphere();\n\n/* Make a cylinder */\n`
+    );
+
+    prompt = codeEngine.buildPrompt("Make a cylinder", false);
+    expect(prompt).toBe(
+      `/* ${description} */\n\n/* Make a cube */\nmakeCube();\n\n/* Make a sphere */\nmakeSphere();\n\n/* Make a cylinder */\n`
+    );
+
+    prompt = codeEngine.buildPrompt("Make a cylinder", true);
+    expect(prompt).toBe(
+      `/* ${description} */\n\n/* Make a cube */\nmakeCube();\n\n/* Make a sphere */\nmakeSphere();\n\n/* Make a cube */\ncube = makeCube();\n\n/* Make a sphere */\nsphere = makeSphere();\n\n/* Make a cylinder */\n`
+    );
+
+
+  });
+});

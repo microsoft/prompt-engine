@@ -187,7 +187,7 @@ export class PromptEngine implements IPromptEngine {
    * @param inputLength Length of the input string - used to determine how long the context can be
    * @returns A context string containing description, examples and ongoing interactions with the model
    */
-  public buildContext(userInput?: string): Context {
+  public buildContext(userInput?: string, multiTurn?: boolean): Context {
     let context = "";
     context = this.insertDescription(context);
     context = this.insertExamples(context);
@@ -197,7 +197,10 @@ export class PromptEngine implements IPromptEngine {
       this.throwContextOverflowError();
     }
 
-    context = this.insertInteractions(context, userInput);
+    if (multiTurn){
+      context = this.insertInteractions(context, userInput);
+    }
+    
     return context;
   }
 
@@ -219,9 +222,9 @@ export class PromptEngine implements IPromptEngine {
    * It then appends the current interaction history and the current input,
    * to effectively coax a new response from the model.
    */
-  public buildPrompt(input: string): Prompt {
+  public buildPrompt(input: string, multiTurn: boolean = true): Prompt {
     let formattedInput = this.formatInput(input);
-    let prompt = this.buildContext(formattedInput);
+    let prompt = this.buildContext(formattedInput, multiTurn);
     prompt += formattedInput;
     return prompt;
   }
