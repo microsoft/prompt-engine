@@ -18,7 +18,7 @@ See [How to get Codex to produce the code you want](https://microsoft.github.io/
 
 The library currently supports a generic `PromptEngine`, a `CodeEngine` and a `ChatEngine`. All three facilitate a pattern of prompt engineering where the prompt is composed of a description, examples of inputs and outputs and an ongoing "dialog" representing the ongoing input/output pairs as the user and model communicate. The dialog ensures that the model (which is stateless) has the context about what's happened in the conversation so far.
 
-This architecture can be visualized as follows
+See architecture diagram representation:
   
 <img src="https://user-images.githubusercontent.com/17247257/178334939-65e0e3ce-39b3-4abc-a889-7f2c0fb75f60.png" width="500">
 
