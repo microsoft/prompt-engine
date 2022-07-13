@@ -67,7 +67,7 @@ Now that we have our `CodeEngine`, we can use it to create prompts:
 
 ```js
 const query = "What's 1018 times the ninth power of four?";
-const prompt = codeEngine.createPrompt(query);
+const prompt = codeEngine.buildPrompt(query);
 ```
 
 The resulting prompt will be a string with the description, examples and the latest query formatted with comment operators and line breaks:
@@ -100,7 +100,7 @@ codeEngine.addInteraction(query, code);
 Now new prompts will include the latest NL->Code interaction:
 
 ```js
-codeEngine.createPrompt("How about the 8th power?");
+codeEngine.buildPrompt("How about the 8th power?");
 ```
 
 Produces a prompt identical to the one above, but with the NL->Code dialog history:
@@ -146,7 +146,7 @@ These examples help set the tone of the bot, in this case Marvin from Hitchiker'
 ```js
 const chatEngine = new ChatEngine(description, examples, undefined, chatEngineConfig);
 const userQuery = "What's the meaning of life?";
-const prompt = chatEngine.createPrompt(userQuery);
+const prompt = chatEngine.buildPrompt(userQuery);
 ```
 
 When passed to a large language model (e.g. GPT-3), the context of the above prompt will help coax a good Marvin-like answer from the model, like "The meaning of life is 42.". As with Code Engine, we can persist this answer and continue the dialog such that the model is aware of the conversation context: 
