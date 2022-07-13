@@ -51,7 +51,7 @@ By default, `CodeEngine` uses JavaScript as the programming language, but you ca
 
 ```js
 const pythonConfig = {
-  commentOperator = "#",
+  commentOperator: "#",
 }
 const codeEngine = new CodeEngine(description, examples, pythonConfig);
 
