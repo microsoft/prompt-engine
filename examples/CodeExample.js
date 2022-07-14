@@ -28,7 +28,7 @@ console.log("PROMPT LENGTH: " + prompt.length);
 
 // PROMPT
 
-// /* Natural Language Commands to Math Code */
+// /*/ Natural Language Commands to Math Code /*/
 
 // /* what's 10 plus 18 */
 // console.log(10 + 18)

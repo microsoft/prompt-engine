@@ -2,6 +2,8 @@ import { DefaultModelConfig, PromptEngine } from "./PromptEngine";
 import { Interaction, IModelConfig, ICodePromptConfig } from "./types";
 
 export const JavaScriptConfig: ICodePromptConfig = {
+  descriptionCommentOperator: "/*/",
+  descriptionCloseCommentOperator: "/*/",
   commentOperator: "/*",
   closeCommentOperator: "*/",
   newLineOperator: "\n",
@@ -24,8 +26,8 @@ export class CodeEngine extends PromptEngine {
       inputPostfix: languageConfig.closeCommentOperator,
       outputPrefix: "",
       outputPostfix: "",
-      descriptionPrefix: languageConfig.commentOperator,
-      descriptionPostfix: languageConfig.closeCommentOperator,
+      descriptionPrefix: languageConfig.descriptionCommentOperator,
+      descriptionPostfix: languageConfig.descriptionCloseCommentOperator,
       newLineOperator: languageConfig.newLineOperator,
     };
   }

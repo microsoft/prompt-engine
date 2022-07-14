@@ -27,6 +27,8 @@ export interface IPromptConfig {
 }
 
 export interface ICodePromptConfig {
+  descriptionCommentOperator: string;
+  descriptionCloseCommentOperator: string;
   commentOperator: string;
   closeCommentOperator?: string;
   newLineOperator: string;
