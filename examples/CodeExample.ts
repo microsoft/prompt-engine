@@ -1,4 +1,4 @@
-import { CodeEngine } from "../src/CodeEngine";
+const { CodeEngine } = require("prompt-engine");
 
 const description = "Natural Language Commands to Math Code";
 const examples = [

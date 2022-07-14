@@ -1,4 +1,4 @@
-import { ChatEngine } from "../src/ChatEngine";
+const { ChatEngine } = require("prompt-engine");
 
 const description = "I want to speak with a bot which replies in under 20 words each time";
 const examples = [
