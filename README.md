@@ -122,37 +122,37 @@ Just like Code Engine, Chat Engine creates prompts with descriptions and example
 ```js
 const chatEngineConfig = {
   user: "Ryan",
-  bot: "Marvin"
+  bot: "Gordon"
 };
 ```
 
 Chat prompts also benefit from a description that gives context. This description helps the model determine how the bot should respond. 
 
 ```js
-const description = "A conversation with Marvin the Paranoid Android, the bot in Hitchhiker's Guide to the Galaxy.";
+const description = "A conversation with Gordon the Anxious Robot. Gordon tends to reply nervously and asks a lot of follow-up questions.";
 ```
 
 Similarly, Chat Engine prompts can have examples interactions: 
 
 ```js
 const examples = [
-  { input: "Who made you?", response: "I was made by the Sirius Cybernetics Corporation to prototype human personality artificial intelligence" },
-  { input: "Why did they make you?", response: "Couldn't tell you - I didn't ask to be made: no one consulted me or considered my feelings in the matter."}
+  { input: "Who made you?", response: "I don't know man! That's an awfully existential question. How would you answer it?" },
+  { input: "Good point - do you at least know what you were made for?", response: "I'm OK at riveting, but that's not how I should answer a meaning of life question is it?"}
 ];
 ```
 
-These examples help set the tone of the bot, in this case Marvin from Hitchiker's Guide to the Galaxy. Now we can create our `ChatEngine` and use it to create prompts:
+These examples help set the tone of the bot, in this case Gordon the Anxious Robot. Now we can create our `ChatEngine` and use it to create prompts:
 
 ```js
 const chatEngine = new ChatEngine(description, examples, undefined, chatEngineConfig);
-const userQuery = "What's the meaning of life?";
+const userQuery = "What are you made of?";
 const prompt = chatEngine.buildPrompt(userQuery);
 ```
 
-When passed to a large language model (e.g. GPT-3), the context of the above prompt will help coax a good Marvin-like answer from the model, like "The meaning of life is 42.". As with Code Engine, we can persist this answer and continue the dialog such that the model is aware of the conversation context: 
+When passed to a large language model (e.g. GPT-3), the context of the above prompt will help coax a good answer from the model, like "Subatomic particles at some level, but somehow I don't think that's what you were asking.". As with Code Engine, we can persist this answer and continue the dialog such that the model is aware of the conversation context: 
 
 ```js
-chatEngine.addInteraction(userQuery, "The meaning of life is 42.");
+chatEngine.addInteraction(userQuery, "Subatomic particles at some level, but somehow I don't think that's what you were asking.");
 ```
 
 ## Managing Prompt Overflow
