@@ -1,8 +1,11 @@
-import { DefaultModelConfig, PromptEngine } from "./PromptEngine";
+import { PromptEngine } from "./PromptEngine";
 import { Interaction, IModelConfig, IChatConfig } from "./types";
 import { dashesToCamelCase } from "./utils/utils";
 
 export const DefaultChatConfig: IChatConfig = {
+  modelConfig: {
+    maxTokens: 1024,
+  },
   userName: "USER",
   botName: "BOT",
   newlineOperator: "\n",
@@ -14,21 +17,21 @@ export class ChatEngine extends PromptEngine {
   constructor(
     description: string = "",
     examples: Interaction[] = [],
-    modelConfig: IModelConfig = DefaultModelConfig,
     flowResetText: string = "",
     languageConfig: IChatConfig = DefaultChatConfig
   ) {
-    super(description, examples, modelConfig, flowResetText);
-    this.languageConfig = languageConfig;
+    super(description, examples, flowResetText);
+    this.languageConfig = { ...DefaultChatConfig, ...languageConfig};
     this.promptConfig = {
-      inputPrefix: languageConfig.userName + ":",
+      modelConfig: this.languageConfig.modelConfig,
+      inputPrefix: this.languageConfig.userName + ":",
       inputPostfix: "",
-      outputPrefix: languageConfig.botName + ":",
+      outputPrefix: this.languageConfig.botName + ":",
       outputPostfix: "",
       descriptionPrefix: "",
       descriptionPostfix: "",
-      newlineOperator: languageConfig.newlineOperator,
-    };
+      newlineOperator: this.languageConfig.newlineOperator,
+    }
   }
 
   protected loadConfigYAML(parsedYAML: Record<string, any>) {
@@ -41,7 +44,7 @@ export class ChatEngine extends PromptEngine {
           for (const key in modelConfig) {
             camelCaseModelConfig[dashesToCamelCase(key)] = modelConfig[key];
           }
-          this.modelConfig = { ...this.modelConfig, ...camelCaseModelConfig };
+          this.languageConfig.modelConfig = { ...this.promptConfig.modelConfig, ...camelCaseModelConfig };
           delete configData["model-config"];
         }
         const camelCaseConfig = {};
@@ -50,6 +53,7 @@ export class ChatEngine extends PromptEngine {
         }
         this.languageConfig = { ...this.languageConfig, ...camelCaseConfig };
         this.promptConfig = {
+          modelConfig: this.languageConfig.modelConfig,
           inputPrefix: this.languageConfig.userName + ":",
           inputPostfix: "",
           outputPrefix: this.languageConfig.botName + ":",

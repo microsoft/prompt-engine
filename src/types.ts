@@ -13,27 +13,30 @@ export interface Interaction {
 }
 
 export interface IModelConfig {
-  maxTokens: number;
+  maxTokens?: number;
 }
 
 export interface IPromptConfig {
-  descriptionPrefix: string;
-  descriptionPostfix: string;
-  inputPrefix: string;
-  inputPostfix: string;
-  outputPrefix: string;
-  outputPostfix: string;
-  newlineOperator: string;
+  modelConfig?: IModelConfig;
+  descriptionPrefix?: string;
+  descriptionPostfix?: string;
+  inputPrefix?: string;
+  inputPostfix?: string;
+  outputPrefix?: string;
+  outputPostfix?: string;
+  newlineOperator?: string;
 }
 
 export interface ICodePromptConfig {
-  commentOperator: string;
+  modelConfig?: IModelConfig;
+  commentOperator?: string;
   closeCommentOperator?: string;
-  newlineOperator: string;
+  newlineOperator?: string;
 }
 
 export interface IChatConfig {
-  userName: string;
-  botName: string;
-  newlineOperator: string;
+  modelConfig?: IModelConfig;
+  userName?: string;
+  botName?: string;
+  newlineOperator?: string;
 }
