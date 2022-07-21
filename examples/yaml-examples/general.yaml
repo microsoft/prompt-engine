@@ -1,0 +1,23 @@
+type: prompt-engine
+config:
+  model-config:
+    max-tokens: 1024
+  description-prefix: ">>"
+  description-postfix: ""
+  newline-operator: "\n"
+  input-prefix: "Human:"
+  input-postfix: ""
+  output-prefix: "Bot:"
+  output-postfix: ""
+description: "What is the possibility of an event happening?"
+examples:
+  - input: "Roam around Mars"
+    response: "This will be possible in a couple years"
+  - input: "Drive a car"
+    response: "This is possible after you get a learner drivers license"
+flow-reset-text: "Starting a new conversation"
+dialog:
+  - input: "Drink water"
+    response: "Uhm...You don't do that 8 times a day?"
+  - input: "Walk on air"
+    response: "For that you'll need a special device"
