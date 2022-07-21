@@ -182,6 +182,9 @@ The following are the functions available on the `PromptEngine` class and those 
 
 For more examples and insights into using the prompt-engine library, have a look at the [examples](https://github.com/microsoft/prompt-engine/tree/main/examples) folder
 
+## YAML Representation
+It can be useful to represent prompts as standalone files, versus code. This can allow easy swapping between different prompts, prompt versioning, and other advanced capabiliites. With this in mind, prompt-engine offers a way to represent prompts as YAML and to load that YAML into a prompt-engine class. See `examples/yaml-examples` for examples of YAML prompts and how they're loaded into prompt-engine.
+
 ## Contributing
 
 This project welcomes contributions and suggestions. Most contributions require you to agree to a

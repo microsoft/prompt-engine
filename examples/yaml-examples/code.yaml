@@ -1,0 +1,15 @@
+type: code-engine
+config:
+  model-config:
+    max-tokens: 1024
+description: "Natural Language Commands to Math Code"
+examples:
+  - input: "what's 10 plus 18"
+    response: "console.log(10 + 18)"
+  - input: "what's 10 times 18"
+    response: "console.log(10 * 18)"
+dialog:
+  - input: "what's 18 divided by 10"
+    response: "console.log(10 / 18)"
+  - input: "what's 18 factorial 10"
+    response: "console.log(10 % 18)"
