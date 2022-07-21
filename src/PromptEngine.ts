@@ -36,7 +36,7 @@ export class PromptEngine implements IPromptEngine {
     description: string = "",
     examples: Interaction[] = [],
     flowResetText: string = "",
-    promptConfig: IPromptConfig = DefaultPromptConfig
+    promptConfig: Partial<IPromptConfig> = DefaultPromptConfig
   ) {
     this.description = description;
     this.examples = examples;

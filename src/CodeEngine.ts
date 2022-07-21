@@ -18,7 +18,7 @@ export class CodeEngine extends PromptEngine {
     description: string = "",
     examples: Interaction[] = [],
     flowResetText: string = "",
-    languageConfig: ICodePromptConfig = JavaScriptConfig
+    languageConfig: Partial<ICodePromptConfig> = JavaScriptConfig
   ) {
     super(description, examples, flowResetText);
     this.languageConfig = { ...JavaScriptConfig, ...languageConfig};

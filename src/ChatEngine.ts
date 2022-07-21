@@ -18,7 +18,7 @@ export class ChatEngine extends PromptEngine {
     description: string = "",
     examples: Interaction[] = [],
     flowResetText: string = "",
-    languageConfig: IChatConfig = DefaultChatConfig
+    languageConfig: Partial<IChatConfig> = DefaultChatConfig
   ) {
     super(description, examples, flowResetText);
     this.languageConfig = { ...DefaultChatConfig, ...languageConfig};
