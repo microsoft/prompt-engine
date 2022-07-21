@@ -6,8 +6,10 @@ const examples = [
   { input: "what's 10 times 18", response: "console.log(10 * 18)" },
 ];
 
-const promptEngine = new CodeEngine(description, examples, {
-  maxTokens: 260,
+const promptEngine = new CodeEngine(description, examples, "", {
+  modelConfig: {
+    maxTokens: 260,
+  }
 });
 promptEngine.addInteractions([
   {

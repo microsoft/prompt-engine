@@ -42,9 +42,7 @@ const examples = [
 ];
 const config = JavaScriptConfig
 
-const promptEngine = new CodeEngine(description, examples, {
-  maxTokens: 1024,
-}, "", config);
+const promptEngine = new CodeEngine(description, examples, "", config);
 
 // Creating a new readline interface
 const rl = readline.createInterface({

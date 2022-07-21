@@ -1,7 +1,6 @@
 import {
   Interaction,
   IPromptConfig,
-  IModelConfig,
   Prompt,
   IPromptEngine,
   Context,
@@ -12,6 +11,9 @@ import GPT3Tokenizer from "gpt3-tokenizer";
 import { dashesToCamelCase } from "./utils/utils";
 
 export const DefaultPromptConfig: IPromptConfig = {
+  modelConfig: {
+    maxTokens: 1024,
+  },
   inputPrefix: "",
   inputPostfix: "",
   outputPrefix: "",
@@ -21,15 +23,10 @@ export const DefaultPromptConfig: IPromptConfig = {
   newlineOperator: "\n",
 };
 
-export const DefaultModelConfig: IModelConfig = {
-  maxTokens: 4096,
-};
-
 const tokenizer = new GPT3Tokenizer({ type: 'gpt3' });
 
 export class PromptEngine implements IPromptEngine {
   protected promptConfig: IPromptConfig; // Configuration for the prompt engine
-  protected modelConfig: IModelConfig; // Configuration for the model being used
   protected description?: string; // Description of the task for the model
   protected examples: Interaction[]; // Few show examples of input -> response for the model
   protected flowResetText?: string; // Flow Reset Text to reset the execution flow and any ongoing remnants of the examples
@@ -38,15 +35,13 @@ export class PromptEngine implements IPromptEngine {
   constructor(
     description: string = "",
     examples: Interaction[] = [],
-    modelConfig: IModelConfig = DefaultModelConfig,
     flowResetText: string = "",
-    promptConfig: IPromptConfig = DefaultPromptConfig
+    promptConfig: Partial<IPromptConfig> = DefaultPromptConfig
   ) {
     this.description = description;
     this.examples = examples;
-    this.modelConfig = modelConfig;
     this.flowResetText = flowResetText;
-    this.promptConfig = promptConfig;
+    this.promptConfig = { ...DefaultPromptConfig, ...promptConfig };
     this.dialog = [];
   }
 
@@ -113,7 +108,7 @@ export class PromptEngine implements IPromptEngine {
           for (const key in modelConfig) {
             camelCaseModelConfig[dashesToCamelCase(key)] = modelConfig[key];
           }
-          this.modelConfig = { ...this.modelConfig, ...camelCaseModelConfig };
+          this.promptConfig.modelConfig = { ...this.promptConfig.modelConfig, ...camelCaseModelConfig };
           delete configData["model-config"];
         }
         const camelCaseConfig = {};
@@ -360,7 +355,7 @@ export class PromptEngine implements IPromptEngine {
         if (userInput !== ""){
           numTokens = tokenizer.encode(context + userInput).text.length;
         }
-        if (numTokens > this.modelConfig.maxTokens){
+        if (numTokens > this.promptConfig.modelConfig.maxTokens){
           return true;
         } else {
           return false;

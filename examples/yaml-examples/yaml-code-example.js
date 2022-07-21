@@ -1,4 +1,4 @@
-const { CodeEngine } = require("./../../out/CodeEngine");
+const { CodeEngine } = require("prompt-engine");
 const { readFileSync } = require("fs");
 
 const promptEngine = new CodeEngine();
