@@ -23,7 +23,7 @@ export interface IPromptConfig {
   inputPostfix: string;
   outputPrefix: string;
   outputPostfix: string;
-  newLineOperator: string;
+  newlineOperator: string;
 }
 
 export interface ICodePromptConfig {
@@ -31,11 +31,11 @@ export interface ICodePromptConfig {
   descriptionCloseCommentOperator: string;
   commentOperator: string;
   closeCommentOperator?: string;
-  newLineOperator: string;
+  newlineOperator: string;
 }
 
 export interface IChatConfig {
   userName: string;
   botName: string;
-  newLineOperator: string;
+  newlineOperator: string;
 }
