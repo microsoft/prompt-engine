@@ -35,7 +35,7 @@ describe("Initialized NL-to-Code Engine should produce the correct prompt", () =
   test("should create an NL-to-Code prompt with description", () => {
     let codeEngine = new CodeEngine(description);
     let prompt = codeEngine.buildPrompt("Make a cube");
-    expect(prompt).toBe(`/* ${description} */\n\n/* Make a cube */\n`);
+    expect(prompt).toBe(`/*/ ${description} /*/\n\n/* Make a cube */\n`);
   });
 
   codeEngine = new CodeEngine(description, examples);
@@ -43,7 +43,7 @@ describe("Initialized NL-to-Code Engine should produce the correct prompt", () =
   test("should create an NL-to-Code prompt with description and examples", () => {
     let prompt = codeEngine.buildPrompt("Make a cylinder");
     expect(prompt).toBe(
-      `/* ${description} */\n\n/* Make a cube */\nmakeCube();\n\n/* Make a sphere */\nmakeSphere();\n\n/* Make a cylinder */\n`
+      `/*/ ${description} /*/\n\n/* Make a cube */\nmakeCube();\n\n/* Make a sphere */\nmakeSphere();\n\n/* Make a cylinder */\n`
     );
   });
 
@@ -52,7 +52,7 @@ describe("Initialized NL-to-Code Engine should produce the correct prompt", () =
                               "makeCylinder();");
     let prompt = codeEngine.buildPrompt("Make a double helix");
     expect(prompt).toBe(
-      `/* ${description} */\n\n/* Make a cube */\nmakeCube();\n\n/* Make a sphere */\nmakeSphere();\n\n/* Make a cylinder */\nmakeCylinder();\n\n/* Make a double helix */\n`
+      `/*/ ${description} /*/\n\n/* Make a cube */\nmakeCube();\n\n/* Make a sphere */\nmakeSphere();\n\n/* Make a cylinder */\nmakeCylinder();\n\n/* Make a double helix */\n`
     );
   });
 
@@ -61,7 +61,7 @@ describe("Initialized NL-to-Code Engine should produce the correct prompt", () =
                               "makeDoubleHelix();");
     let prompt = codeEngine.buildPrompt("make a torus");
     expect(prompt).toBe(
-      `/* ${description} */\n\n/* Make a cube */\nmakeCube();\n\n/* Make a sphere */\nmakeSphere();\n\n/* Make a cylinder */\nmakeCylinder();\n\n/* Make a double helix */\nmakeDoubleHelix();\n\n/* make a torus */\n`
+      `/*/ ${description} /*/\n\n/* Make a cube */\nmakeCube();\n\n/* Make a sphere */\nmakeSphere();\n\n/* Make a cylinder */\nmakeCylinder();\n\n/* Make a double helix */\nmakeDoubleHelix();\n\n/* make a torus */\n`
     );
   });
 
@@ -69,7 +69,7 @@ describe("Initialized NL-to-Code Engine should produce the correct prompt", () =
     codeEngine.removeLastInteraction();
     let prompt = codeEngine.buildPrompt("make a torus");
     expect(prompt).toBe(
-      `/* ${description} */\n\n/* Make a cube */\nmakeCube();\n\n/* Make a sphere */\nmakeSphere();\n\n/* Make a cylinder */\nmakeCylinder();\n\n/* make a torus */\n`
+      `/*/ ${description} /*/\n\n/* Make a cube */\nmakeCube();\n\n/* Make a sphere */\nmakeSphere();\n\n/* Make a cylinder */\nmakeCylinder();\n\n/* make a torus */\n`
     );
   });
 });
@@ -89,7 +89,7 @@ describe("Code prompt should truncate when too long", () => {
                               "console.log(18 / 10);");
     let prompt = codeEngine.buildPrompt("what's 18 factorial 10");
     expect(prompt).toBe(
-      `/* ${description} */\n\n/* what's 10 plus 18 */\nconsole.log(10 + 18);\n\n/* what's 10 times 18 */\nconsole.log(10 * 18);\n\n/* what's 18 factorial 10 */\n`
+      `/*/ ${description} /*/\n\n/* what's 10 plus 18 */\nconsole.log(10 + 18);\n\n/* what's 10 times 18 */\nconsole.log(10 * 18);\n\n/* what's 18 factorial 10 */\n`
     );
   });
 
@@ -105,7 +105,7 @@ describe("Code prompt should truncate when too long", () => {
     ]);
     let prompt = codeEngine.buildPrompt("what's 18 to the power of 10");
     expect(prompt).toBe(
-      `/* ${description} */\n\n/* what's 10 plus 18 */\nconsole.log(10 + 18);\n\n/* what's 10 times 18 */\nconsole.log(10 * 18);\n\n/* what's 18 factorial 10 */\nconsole.log(18 % 10);\n\n/* what's 18 to the power of 10 */\n`
+      `/*/ ${description} /*/\n\n/* what's 10 plus 18 */\nconsole.log(10 + 18);\n\n/* what's 10 times 18 */\nconsole.log(10 * 18);\n\n/* what's 18 factorial 10 */\nconsole.log(18 % 10);\n\n/* what's 18 to the power of 10 */\n`
     );
   });
 });
@@ -122,7 +122,7 @@ describe("Initialized NL-to-Code Engine should produce the correct prompt", () =
   test("should create an NL-to-Code prompt with description", () => {
     let codeEngine = new CodeEngine(description, [], {maxTokens: 1024}, flowResetText);
     let prompt = codeEngine.buildPrompt("Make a cube");
-    expect(prompt).toBe(`/* ${description} */\n\n/* ${flowResetText} */\n\n/* Make a cube */\n`);
+    expect(prompt).toBe(`/*/ ${description} /*/\n\n/*/ ${flowResetText} /*/\n\n/* Make a cube */\n`);
   });
 });
 
@@ -176,7 +176,7 @@ describe("Initialized NL-to-Code Engine should produce the correct prompt", () =
 
     let prompt = codeEngine.buildPrompt("Make a cylinder");
     expect(prompt).toBe(
-      `/* ${description} */\n\n/* Make a cube */\ncube = makeCube();\n\n/* Make a sphere */\nsphere = makeSphere();\n\n/* Make a cylinder */\n`
+      `/*/ ${description} /*/\n\n/* Make a cube */\ncube = makeCube();\n\n/* Make a sphere */\nsphere = makeSphere();\n\n/* Make a cylinder */\n`
     );
 
     codeEngine.resetContext()
@@ -185,7 +185,7 @@ describe("Initialized NL-to-Code Engine should produce the correct prompt", () =
     prompt = codeEngine.buildPrompt("Make a cylinder");
 
     expect(prompt).toBe(
-      `/* ${description} */\n\n/* Make a cylinder */\n`
+      `/*/ ${description} /*/\n\n/* Make a cylinder */\n`
     );
   });
 });
@@ -217,17 +217,17 @@ describe("Initialized NL-to-Code Engine without multi-turn should produce the co
 
     let prompt = codeEngine.buildPrompt("Make a cylinder");
     expect(prompt).toBe(
-      `/* ${description} */\n\n/* Make a cube */\nmakeCube();\n\n/* Make a sphere */\nmakeSphere();\n\n/* Make a cube */\ncube = makeCube();\n\n/* Make a sphere */\nsphere = makeSphere();\n\n/* Make a cylinder */\n`
+      `/*/ ${description} /*/\n\n/* Make a cube */\nmakeCube();\n\n/* Make a sphere */\nmakeSphere();\n\n/* Make a cube */\ncube = makeCube();\n\n/* Make a sphere */\nsphere = makeSphere();\n\n/* Make a cylinder */\n`
     );
 
     prompt = codeEngine.buildPrompt("Make a cylinder", false);
     expect(prompt).toBe(
-      `/* ${description} */\n\n/* Make a cube */\nmakeCube();\n\n/* Make a sphere */\nmakeSphere();\n\n/* Make a cylinder */\n`
+      `/*/ ${description} /*/\n\n/* Make a cube */\nmakeCube();\n\n/* Make a sphere */\nmakeSphere();\n\n/* Make a cylinder */\n`
     );
 
     prompt = codeEngine.buildPrompt("Make a cylinder", true);
     expect(prompt).toBe(
-      `/* ${description} */\n\n/* Make a cube */\nmakeCube();\n\n/* Make a sphere */\nmakeSphere();\n\n/* Make a cube */\ncube = makeCube();\n\n/* Make a sphere */\nsphere = makeSphere();\n\n/* Make a cylinder */\n`
+      `/*/ ${description} /*/\n\n/* Make a cube */\nmakeCube();\n\n/* Make a sphere */\nmakeSphere();\n\n/* Make a cube */\ncube = makeCube();\n\n/* Make a sphere */\nsphere = makeSphere();\n\n/* Make a cylinder */\n`
     );
 
 

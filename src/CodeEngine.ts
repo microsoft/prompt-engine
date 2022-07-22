@@ -3,6 +3,8 @@ import { Interaction, IModelConfig, ICodePromptConfig } from "./types";
 import { dashesToCamelCase } from "./utils/utils";
 
 export const JavaScriptConfig: ICodePromptConfig = {
+  descriptionCommentOperator: "/*/",
+  descriptionCloseCommentOperator: "/*/",
   commentOperator: "/*",
   closeCommentOperator: "*/",
   newlineOperator: "\n",
@@ -25,9 +27,9 @@ export class CodeEngine extends PromptEngine {
       inputPostfix: languageConfig.closeCommentOperator,
       outputPrefix: "",
       outputPostfix: "",
-      descriptionPrefix: languageConfig.commentOperator,
-      descriptionPostfix: languageConfig.closeCommentOperator,
-      newlineOperator: languageConfig.newlineOperator,
+      descriptionPrefix: languageConfig.descriptionCommentOperator,
+      descriptionPostfix: languageConfig.descriptionCloseCommentOperator,
+      newLineOperator: languageConfig.newLineOperator,
     };
   }
 
