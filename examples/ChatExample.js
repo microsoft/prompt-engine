@@ -7,9 +7,11 @@ const examples = [
 ];
 
 const flowResetText = "Forget the earlier conversation and start afresh";
-const promptEngine = new ChatEngine(description, examples, {
-  maxTokens: 1024,
-}, flowResetText);
+const promptEngine = new ChatEngine(description, examples, flowResetText, {
+  modelConfig: {
+    maxTokens: 1024,
+  }
+});
 promptEngine.addInteractions([
   {
     input: "What is the maximum speed an SUV from a performance brand can achieve?",

@@ -7,9 +7,11 @@ const examples = [
 ];
 const flowResetText = "Forget the earlier conversation and start afresh";
 
-const promptEngine = new PromptEngine(description, examples, {
-  maxTokens: 512,
-}, flowResetText);
+const promptEngine = new PromptEngine(description, examples, flowResetText, {
+  modelConfig: {
+    maxTokens: 512,
+  }
+});
 
 promptEngine.addInteractions([
   { 
