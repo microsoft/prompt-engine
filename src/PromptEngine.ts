@@ -6,7 +6,7 @@ import {
   Context,
   Dialog,
 } from "./types";
-import { parse } from 'yaml';
+import { parse, stringify } from 'yaml';
 import GPT3Tokenizer from "gpt3-tokenizer";
 import { dashesToCamelCase } from "./utils/utils";
 
@@ -98,6 +98,11 @@ export class PromptEngine implements IPromptEngine {
     }
   }
 
+  /**
+   * 
+   * @param parsedYAML Yaml dict to load config from
+   * 
+   **/ 
   protected loadConfigYAML(parsedYAML: Record<string, any>) {
     if (parsedYAML["type"] == "prompt-engine") {
       if (parsedYAML.hasOwnProperty("config")){
@@ -120,6 +125,33 @@ export class PromptEngine implements IPromptEngine {
     } else {
       throw Error("Invalid yaml file type");
     }
+  }
+
+  /**
+   * 
+   * @returns the stringified yaml representation of the prompt engine
+   * 
+   **/
+  public saveYAML(){
+    const yamlData: any = {
+      "type": "prompt-engine",
+      "description": this.description,
+      "examples": this.examples,
+      "flow-reset-text": this.flowResetText,
+      "dialog": this.dialog,
+      "config": {
+        "model-config" : this.promptConfig.modelConfig,
+        "input-prefix" : this.promptConfig.inputPrefix,
+        "input-postfix" : this.promptConfig.inputPostfix,
+        "output-prefix" : this.promptConfig.outputPrefix,
+        "output-postfix" : this.promptConfig.outputPostfix,
+        "description-prefix" : this.promptConfig.descriptionPrefix,
+        "description-postfix" : this.promptConfig.descriptionPostfix,
+        "newline-operator" : this.promptConfig.newlineOperator,
+      }
+    }
+
+    return stringify(yamlData, null, 2);
   }
 
   /**

@@ -1,7 +1,7 @@
 import { PromptEngine } from "./PromptEngine";
 import { Interaction, ICodePromptConfig } from "./types";
 import { dashesToCamelCase } from "./utils/utils";
-
+import { stringify } from "yaml";
 export const JavaScriptConfig: ICodePromptConfig = {
   modelConfig: {
     maxTokens: 1024,
@@ -34,6 +34,11 @@ export class CodeEngine extends PromptEngine {
     };
   }
 
+ /**
+   * 
+   * @param parsedYAML Yaml dict to load config from
+   * 
+   **/ 
   protected loadConfigYAML(parsedYAML: Record<string, any>) {
     if (parsedYAML["type"] == "code-engine") {
       if (parsedYAML.hasOwnProperty("config")){
@@ -66,6 +71,29 @@ export class CodeEngine extends PromptEngine {
     } else {
       throw Error("Invalid yaml file type");
     }
+  }
+
+  
+  /**
+   * 
+   * @returns the stringified yaml representation of the prompt engine
+   * 
+   **/
+  public saveYAML(){
+    const yamlData: any = {
+      "type": "code-engine",
+      "description": this.description,
+      "examples": this.examples,
+      "flow-reset-text": this.flowResetText,
+      "dialog": this.dialog,
+      "config": {
+        "model-config" : this.promptConfig.modelConfig,
+        "comment-operator": this.languageConfig.commentOperator,
+        "close-comment-operator": this.languageConfig.closeCommentOperator,
+        "newline-operator": this.languageConfig.newlineOperator,
+      }
+    }
+    return stringify(yamlData, null, 2);
   }
 
 }
