@@ -1,8 +1,11 @@
-import { DefaultModelConfig, PromptEngine } from "./PromptEngine";
-import { Interaction, IModelConfig, ICodePromptConfig } from "./types";
+import { PromptEngine } from "./PromptEngine";
+import { Interaction, ICodePromptConfig } from "./types";
 import { dashesToCamelCase } from "./utils/utils";
 
 export const JavaScriptConfig: ICodePromptConfig = {
+  modelConfig: {
+    maxTokens: 1024,
+  },
   descriptionCommentOperator: "/*/",
   descriptionCloseCommentOperator: "/*/",
   commentOperator: "/*",
@@ -16,20 +19,20 @@ export class CodeEngine extends PromptEngine {
   constructor(
     description: string = "",
     examples: Interaction[] = [],
-    modelConfig: IModelConfig = DefaultModelConfig,
     flowResetText: string = "",
-    languageConfig: ICodePromptConfig = JavaScriptConfig
+    languageConfig: Partial<ICodePromptConfig> = JavaScriptConfig
   ) {
-    super(description, examples, modelConfig, flowResetText);
-    this.languageConfig = languageConfig;
+    super(description, examples, flowResetText);
+    this.languageConfig = { ...JavaScriptConfig, ...languageConfig};
     this.promptConfig = {
-      inputPrefix: languageConfig.commentOperator,
-      inputPostfix: languageConfig.closeCommentOperator,
+      modelConfig: this.languageConfig.modelConfig,
+      inputPrefix: this.languageConfig.commentOperator,
+      inputPostfix: this.languageConfig.closeCommentOperator,
       outputPrefix: "",
       outputPostfix: "",
-      descriptionPrefix: languageConfig.descriptionCommentOperator,
-      descriptionPostfix: languageConfig.descriptionCloseCommentOperator,
-      newLineOperator: languageConfig.newLineOperator,
+      descriptionPrefix: this.languageConfig.descriptionCommentOperator,
+      descriptionPostfix: this.languageConfig.descriptionCloseCommentOperator,
+      newlineOperator: this.languageConfig.newlineOperator,
     };
   }
 
@@ -43,7 +46,7 @@ export class CodeEngine extends PromptEngine {
           for (const key in modelConfig) {
             camelCaseModelConfig[dashesToCamelCase(key)] = modelConfig[key];
           }
-          this.modelConfig = { ...this.modelConfig, ...camelCaseModelConfig };
+          this.languageConfig.modelConfig = { ...this.languageConfig.modelConfig, ...camelCaseModelConfig };
           delete configData["model-config"];
         }
         const camelCaseConfig = {};
@@ -52,6 +55,7 @@ export class CodeEngine extends PromptEngine {
         }
         this.languageConfig = { ...this.languageConfig, ...camelCaseConfig };
         this.promptConfig = {
+          modelConfig: this.languageConfig.modelConfig,
           inputPrefix: this.languageConfig.commentOperator,
           inputPostfix: this.languageConfig.closeCommentOperator,
           outputPrefix: "",

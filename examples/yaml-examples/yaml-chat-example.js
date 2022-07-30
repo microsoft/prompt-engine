@@ -1,4 +1,4 @@
-const { ChatEngine } = require("./../../out/ChatEngine");
+const { ChatEngine } = require("prompt-engine");
 const { readFileSync } = require("fs");
 
 const promptEngine = new ChatEngine();
@@ -9,8 +9,6 @@ promptEngine.loadYAML(yamlConfig);
 console.log(promptEngine.buildContext("", true))
 
 /* Output for this example is:
-
-PROMPT
 
 What is the possibility of an event happening?
 
