@@ -2,8 +2,8 @@ import { DefaultModelConfig, PromptEngine } from "./PromptEngine";
 import { Interaction, IModelConfig, ICodePromptConfig } from "./types";
 
 export const JavaScriptConfig: ICodePromptConfig = {
-  descriptionCommentOperator: "/*/",
-  descriptionCloseCommentOperator: "/*/",
+  descriptionCommentOperator: "/*",
+  descriptionCloseCommentOperator: "*/",
   commentOperator: "/*",
   closeCommentOperator: "*/",
   newLineOperator: "\n",
