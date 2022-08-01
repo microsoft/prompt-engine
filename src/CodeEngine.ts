@@ -6,6 +6,8 @@ export const JavaScriptConfig: ICodePromptConfig = {
   modelConfig: {
     maxTokens: 1024,
   },
+  descriptionCommentOperator: "/*",
+  descriptionCloseCommentOperator: "*/",
   commentOperator: "/*",
   closeCommentOperator: "*/",
   newlineOperator: "\n",
@@ -28,8 +30,8 @@ export class CodeEngine extends PromptEngine {
       inputPostfix: this.languageConfig.closeCommentOperator,
       outputPrefix: "",
       outputPostfix: "",
-      descriptionPrefix: this.languageConfig.commentOperator,
-      descriptionPostfix: this.languageConfig.closeCommentOperator,
+      descriptionPrefix: this.languageConfig.descriptionCommentOperator,
+      descriptionPostfix: this.languageConfig.descriptionCloseCommentOperator,
       newlineOperator: this.languageConfig.newlineOperator,
     };
   }
