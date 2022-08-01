@@ -17,25 +17,28 @@ export interface IModelConfig {
 }
 
 export interface IPromptConfig {
+  modelConfig: IModelConfig;
   descriptionPrefix: string;
   descriptionPostfix: string;
   inputPrefix: string;
   inputPostfix: string;
   outputPrefix: string;
   outputPostfix: string;
-  newLineOperator: string;
+  newlineOperator: string;
 }
 
 export interface ICodePromptConfig {
+  modelConfig: IModelConfig;
   descriptionCommentOperator: string;
   descriptionCloseCommentOperator: string;
   commentOperator: string;
-  closeCommentOperator?: string;
-  newLineOperator: string;
+  closeCommentOperator: string;
+  newlineOperator: string;
 }
 
 export interface IChatConfig {
+  modelConfig: IModelConfig;
   userName: string;
   botName: string;
-  newLineOperator: string;
+  newlineOperator: string;
 }

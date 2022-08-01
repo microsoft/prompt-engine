@@ -1,12 +1,16 @@
-import { DefaultModelConfig, PromptEngine } from "./PromptEngine";
-import { Interaction, IModelConfig, ICodePromptConfig } from "./types";
+import { PromptEngine } from "./PromptEngine";
+import { Interaction, ICodePromptConfig } from "./types";
+import { dashesToCamelCase } from "./utils/utils";
 
 export const JavaScriptConfig: ICodePromptConfig = {
+  modelConfig: {
+    maxTokens: 1024,
+  },
   descriptionCommentOperator: "/*",
   descriptionCloseCommentOperator: "*/",
   commentOperator: "/*",
   closeCommentOperator: "*/",
-  newLineOperator: "\n",
+  newlineOperator: "\n",
 };
 
 export class CodeEngine extends PromptEngine {
@@ -15,20 +19,55 @@ export class CodeEngine extends PromptEngine {
   constructor(
     description: string = "",
     examples: Interaction[] = [],
-    modelConfig: IModelConfig = DefaultModelConfig,
     flowResetText: string = "",
-    languageConfig: ICodePromptConfig = JavaScriptConfig
+    languageConfig: Partial<ICodePromptConfig> = JavaScriptConfig
   ) {
-    super(description, examples, modelConfig, flowResetText);
-    this.languageConfig = languageConfig;
+    super(description, examples, flowResetText);
+    this.languageConfig = { ...JavaScriptConfig, ...languageConfig};
     this.promptConfig = {
-      inputPrefix: languageConfig.commentOperator,
-      inputPostfix: languageConfig.closeCommentOperator,
+      modelConfig: this.languageConfig.modelConfig,
+      inputPrefix: this.languageConfig.commentOperator,
+      inputPostfix: this.languageConfig.closeCommentOperator,
       outputPrefix: "",
       outputPostfix: "",
-      descriptionPrefix: languageConfig.descriptionCommentOperator,
-      descriptionPostfix: languageConfig.descriptionCloseCommentOperator,
-      newLineOperator: languageConfig.newLineOperator,
+      descriptionPrefix: this.languageConfig.descriptionCommentOperator,
+      descriptionPostfix: this.languageConfig.descriptionCloseCommentOperator,
+      newlineOperator: this.languageConfig.newlineOperator,
     };
   }
+
+  protected loadConfigYAML(parsedYAML: Record<string, any>) {
+    if (parsedYAML["type"] == "code-engine") {
+      if (parsedYAML.hasOwnProperty("config")){
+        const configData = parsedYAML["config"]
+        if (configData.hasOwnProperty("model-config")) {
+          const modelConfig = configData["model-config"];
+          const camelCaseModelConfig = {};
+          for (const key in modelConfig) {
+            camelCaseModelConfig[dashesToCamelCase(key)] = modelConfig[key];
+          }
+          this.languageConfig.modelConfig = { ...this.languageConfig.modelConfig, ...camelCaseModelConfig };
+          delete configData["model-config"];
+        }
+        const camelCaseConfig = {};
+        for (const key in configData) {
+          camelCaseConfig[dashesToCamelCase(key)] = configData[key];
+        }
+        this.languageConfig = { ...this.languageConfig, ...camelCaseConfig };
+        this.promptConfig = {
+          modelConfig: this.languageConfig.modelConfig,
+          inputPrefix: this.languageConfig.commentOperator,
+          inputPostfix: this.languageConfig.closeCommentOperator,
+          outputPrefix: "",
+          outputPostfix: "",
+          descriptionPrefix: this.languageConfig.commentOperator,
+          descriptionPostfix: this.languageConfig.closeCommentOperator,
+          newlineOperator: this.languageConfig.newlineOperator,
+        };
+      }
+    } else {
+      throw Error("Invalid yaml file type");
+    }
+  }
+
 }

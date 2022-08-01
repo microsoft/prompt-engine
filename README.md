@@ -53,7 +53,7 @@ By default, `CodeEngine` uses JavaScript as the programming language, but you ca
 const pythonConfig = {
   commentOperator: "#",
 }
-const codeEngine = new CodeEngine(description, examples, pythonConfig);
+const codeEngine = new CodeEngine(description, examples, flowResetText, pythonConfig);
 
 ```
 
@@ -144,7 +144,7 @@ const examples = [
 These examples help set the tone of the bot, in this case Gordon the Anxious Robot. Now we can create our `ChatEngine` and use it to create prompts:
 
 ```js
-const chatEngine = new ChatEngine(description, examples, undefined, chatEngineConfig);
+const chatEngine = new ChatEngine(description, examples, flowResetText, chatEngineConfig);
 const userQuery = "What are you made of?";
 const prompt = chatEngine.buildPrompt(userQuery);
 ```
@@ -162,7 +162,9 @@ Prompts for Large Language Models generally have limited size, depending on the 
 You can specify the maximum tokens allowed in your prompt by passing a `maxTokens` parameter when constructing the config for any prompt engine:
 
 ```js
-let promptEngine = new PromptEngine(description, examples, { maxTokens: 1000 });
+let promptEngine = new PromptEngine(description, examples, flowResetText, {
+  modelConfig: { maxTokens: 1000 }
+});
 ```
 
 ## Available Functions
@@ -181,6 +183,9 @@ The following are the functions available on the `PromptEngine` class and those 
 | `resetContext` | None | Removes all interactions from the dialog, returning the reset context | Context:string |
 
 For more examples and insights into using the prompt-engine library, have a look at the [examples](https://github.com/microsoft/prompt-engine/tree/main/examples) folder
+
+## YAML Representation
+It can be useful to represent prompts as standalone files, versus code. This can allow easy swapping between different prompts, prompt versioning, and other advanced capabiliites. With this in mind, prompt-engine offers a way to represent prompts as YAML and to load that YAML into a prompt-engine class. See `examples/yaml-examples` for examples of YAML prompts and how they're loaded into prompt-engine.
 
 ## Contributing
 

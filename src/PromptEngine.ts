@@ -1,34 +1,32 @@
 import {
   Interaction,
   IPromptConfig,
-  IModelConfig,
   Prompt,
   IPromptEngine,
   Context,
   Dialog,
 } from "./types";
-
+import { parse } from 'yaml';
 import GPT3Tokenizer from "gpt3-tokenizer";
+import { dashesToCamelCase } from "./utils/utils";
 
 export const DefaultPromptConfig: IPromptConfig = {
+  modelConfig: {
+    maxTokens: 1024,
+  },
   inputPrefix: "",
   inputPostfix: "",
   outputPrefix: "",
   outputPostfix: "",
   descriptionPrefix: "",
   descriptionPostfix: "",
-  newLineOperator: "\n",
-};
-
-export const DefaultModelConfig: IModelConfig = {
-  maxTokens: 4096,
+  newlineOperator: "\n",
 };
 
 const tokenizer = new GPT3Tokenizer({ type: 'gpt3' });
 
 export class PromptEngine implements IPromptEngine {
   protected promptConfig: IPromptConfig; // Configuration for the prompt engine
-  protected modelConfig: IModelConfig; // Configuration for the model being used
   protected description?: string; // Description of the task for the model
   protected examples: Interaction[]; // Few show examples of input -> response for the model
   protected flowResetText?: string; // Flow Reset Text to reset the execution flow and any ongoing remnants of the examples
@@ -37,15 +35,13 @@ export class PromptEngine implements IPromptEngine {
   constructor(
     description: string = "",
     examples: Interaction[] = [],
-    modelConfig: IModelConfig = DefaultModelConfig,
     flowResetText: string = "",
-    promptConfig: IPromptConfig = DefaultPromptConfig
+    promptConfig: Partial<IPromptConfig> = DefaultPromptConfig
   ) {
     this.description = description;
     this.examples = examples;
-    this.modelConfig = modelConfig;
     this.flowResetText = flowResetText;
-    this.promptConfig = promptConfig;
+    this.promptConfig = { ...DefaultPromptConfig, ...promptConfig };
     this.dialog = [];
   }
 
@@ -63,11 +59,66 @@ export class PromptEngine implements IPromptEngine {
       context += this.promptConfig.descriptionPostfix
         ? ` ${this.promptConfig.descriptionPostfix}`
         : "";
-      context += this.promptConfig.newLineOperator;
-      context += this.promptConfig.newLineOperator;
+      context += this.promptConfig.newlineOperator;
+      context += this.promptConfig.newlineOperator;
       return context;
     } else {
       return "";
+    }
+  }
+
+  /**
+   * 
+   * @param yaml 
+   * 
+   **/ 
+  public loadYAML(yamlData: string) {
+    const parsedYAML = parse(yamlData);
+    
+    if (parsedYAML.hasOwnProperty("type")) {
+      this.loadConfigYAML(parsedYAML);
+    } else {
+      throw Error("Invalid yaml file type");
+    }
+
+    if (parsedYAML.hasOwnProperty("description")) {
+      this.description = parsedYAML['description'];
+    }
+
+    if (parsedYAML.hasOwnProperty("examples")) {
+      this.examples = parsedYAML['examples'];
+    }
+
+    if (parsedYAML.hasOwnProperty("flow-reset-text")) {
+      this.flowResetText = parsedYAML['flow-reset-text'];
+    }
+
+    if (parsedYAML.hasOwnProperty("dialog")) {
+      this.dialog = parsedYAML['dialog'];
+    }
+  }
+
+  protected loadConfigYAML(parsedYAML: Record<string, any>) {
+    if (parsedYAML["type"] == "prompt-engine") {
+      if (parsedYAML.hasOwnProperty("config")){
+        const configData = parsedYAML["config"]
+        if (configData.hasOwnProperty("model-config")) {
+          const modelConfig = configData["model-config"];
+          const camelCaseModelConfig = {};
+          for (const key in modelConfig) {
+            camelCaseModelConfig[dashesToCamelCase(key)] = modelConfig[key];
+          }
+          this.promptConfig.modelConfig = { ...this.promptConfig.modelConfig, ...camelCaseModelConfig };
+          delete configData["model-config"];
+        }
+        const camelCaseConfig = {};
+        for (const key in configData) {
+          camelCaseConfig[dashesToCamelCase(key)] = configData[key];
+        }
+        this.promptConfig = { ...this.promptConfig, ...camelCaseConfig };
+      }
+    } else {
+      throw Error("Invalid yaml file type");
     }
   }
 
@@ -97,8 +148,8 @@ export class PromptEngine implements IPromptEngine {
       context += this.promptConfig.descriptionPostfix
         ? ` ${this.promptConfig.descriptionPostfix}`
         : "";
-      context += this.promptConfig.newLineOperator;
-      context += this.promptConfig.newLineOperator;
+      context += this.promptConfig.newlineOperator;
+      context += this.promptConfig.newlineOperator;
     }
     return context;
     
@@ -187,7 +238,7 @@ export class PromptEngine implements IPromptEngine {
    * @param inputLength Length of the input string - used to determine how long the context can be
    * @returns A context string containing description, examples and ongoing interactions with the model
    */
-  public buildContext(userInput?: string, multiTurn?: boolean): Context {
+  public buildContext(userInput?: string, multiTurn: boolean = true): Context {
     let context = "";
     context = this.insertDescription(context);
     context = this.insertExamples(context);
@@ -260,8 +311,8 @@ export class PromptEngine implements IPromptEngine {
     formatted += this.promptConfig.inputPostfix
       ? ` ${this.promptConfig.inputPostfix}`
       : "";
-    formatted += this.promptConfig.newLineOperator
-      ? this.promptConfig.newLineOperator
+    formatted += this.promptConfig.newlineOperator
+      ? this.promptConfig.newlineOperator
       : "";
     return formatted;
   };
@@ -275,8 +326,8 @@ export class PromptEngine implements IPromptEngine {
     formatted += this.promptConfig.outputPostfix
       ? ` ${this.promptConfig.outputPostfix}`
       : "";
-    formatted += this.promptConfig.newLineOperator
-      ? this.promptConfig.newLineOperator
+    formatted += this.promptConfig.newlineOperator
+      ? this.promptConfig.newlineOperator
       : "";
     return formatted;
   };
@@ -285,7 +336,7 @@ export class PromptEngine implements IPromptEngine {
     let stringInteraction = "";
     stringInteraction += this.formatInput(interaction.input);
     stringInteraction += this.formatOutput(interaction.response);
-    stringInteraction += this.promptConfig.newLineOperator;
+    stringInteraction += this.promptConfig.newlineOperator;
     return stringInteraction;
   };
 
@@ -304,7 +355,7 @@ export class PromptEngine implements IPromptEngine {
         if (userInput !== ""){
           numTokens = tokenizer.encode(context + userInput).text.length;
         }
-        if (numTokens > this.modelConfig.maxTokens){
+        if (numTokens > this.promptConfig.modelConfig.maxTokens){
           return true;
         } else {
           return false;

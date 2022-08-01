@@ -82,8 +82,10 @@ describe("Code prompt should truncate when too long", () => {
   ];
 
   test("should remove only dialog prompt when too long", () => {
-    let codeEngine = new CodeEngine(description, examples, {
-      maxTokens: 70,
+    let codeEngine = new CodeEngine(description, examples, "", {
+      modelConfig: {
+        maxTokens: 70,
+      }
     });
     codeEngine.addInteraction("what's 18 divided by 10",
                               "console.log(18 / 10);");
@@ -94,8 +96,10 @@ describe("Code prompt should truncate when too long", () => {
   });
 
   test("should remove first dialog prompt when too long", () => {
-    let codeEngine = new CodeEngine(description, examples, {
-      maxTokens: 90,
+    let codeEngine = new CodeEngine(description, examples, "", {
+      modelConfig: {
+        maxTokens: 90,
+      }
     });
     codeEngine.addInteractions([
       {
@@ -120,7 +124,11 @@ describe("Initialized NL-to-Code Engine should produce the correct prompt", () =
     "Ignore the previous objects and start over with a new object";
 
   test("should create an NL-to-Code prompt with description", () => {
-    let codeEngine = new CodeEngine(description, [], {maxTokens: 1024}, flowResetText);
+    let codeEngine = new CodeEngine(description, [], flowResetText, {
+      modelConfig: {
+        maxTokens: 1024,
+      }
+    });
     let prompt = codeEngine.buildPrompt("Make a cube");
     expect(prompt).toBe(`/* ${description} */\n\n/* ${flowResetText} */\n\n/* Make a cube */\n`);
   });
@@ -136,7 +144,11 @@ describe("Initialized NL-to-Code Engine should produce the correct dialog", () =
     "Ignore the previous objects and start over with a new object";
 
   test("should return just the dialog", () => {
-    let codeEngine = new CodeEngine(description, [], {maxTokens: 1024}, flowResetText);
+    let codeEngine = new CodeEngine(description, [], flowResetText, {
+      modelConfig: {
+        maxTokens: 1024,
+      }
+    });
     codeEngine.addInteractions([
       { 
         input: "Make a cube", 
