@@ -26,7 +26,7 @@ export const DefaultPromptConfig: IPromptConfig = {
 const tokenizer = new GPT3Tokenizer({ type: 'gpt3' });
 
 export class PromptEngine implements IPromptEngine {
-  protected promptConfig: IPromptConfig; // Configuration for the prompt engine
+  public promptConfig: IPromptConfig; // Configuration for the prompt engine
   protected description?: string; // Description of the task for the model
   protected examples: Interaction[]; // Few show examples of input -> response for the model
   protected flowResetText?: string; // Flow Reset Text to reset the execution flow and any ongoing remnants of the examples
