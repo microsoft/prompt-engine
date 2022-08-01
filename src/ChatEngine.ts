@@ -1,6 +1,7 @@
 import { PromptEngine } from "./PromptEngine";
 import { Interaction, IModelConfig, IChatConfig } from "./types";
 import { dashesToCamelCase } from "./utils/utils";
+import { stringify } from "yaml";
 
 export const DefaultChatConfig: IChatConfig = {
   modelConfig: {
@@ -34,6 +35,11 @@ export class ChatEngine extends PromptEngine {
     }
   }
 
+ /**
+   * 
+   * @param parsedYAML Yaml dict to load config from
+   * 
+   **/ 
   protected loadConfigYAML(parsedYAML: Record<string, any>) {
     if (parsedYAML["type"] == "chat-engine") {
       if (parsedYAML.hasOwnProperty("config")){
@@ -66,5 +72,28 @@ export class ChatEngine extends PromptEngine {
     } else {
       throw Error("Invalid yaml file type");
     }
+  }
+  
+  
+  /**
+   * 
+   * @returns the stringified yaml representation of the prompt engine
+   * 
+   **/
+  public saveYAML(){
+    const yamlData: any = {
+      "type": "chat-engine",
+      "description": this.description,
+      "examples": this.examples,
+      "flow-reset-text": this.flowResetText,
+      "dialog": this.dialog,
+      "config": {
+        "model-config" : this.promptConfig.modelConfig,
+        "user-name": this.languageConfig.userName,
+        "bot-name": this.languageConfig.botName,
+        "newline-operator": this.languageConfig.newlineOperator
+      }
+    }
+    return stringify(yamlData, null, 2);
   }
 }
