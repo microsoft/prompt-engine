@@ -10,6 +10,8 @@ export const DefaultChatConfig: IChatConfig = {
   userName: "USER",
   botName: "BOT",
   newlineOperator: "\n",
+  multiTurn: true,
+  promptNewlineEnd: false,
 };
 
 export class ChatEngine extends PromptEngine {
@@ -32,6 +34,8 @@ export class ChatEngine extends PromptEngine {
       descriptionPrefix: "",
       descriptionPostfix: "",
       newlineOperator: this.languageConfig.newlineOperator,
+      multiTurn: this.languageConfig.multiTurn,
+      promptNewlineEnd: this.languageConfig.promptNewlineEnd,
     }
   }
 
@@ -67,6 +71,8 @@ export class ChatEngine extends PromptEngine {
           descriptionPrefix: "",
           descriptionPostfix: "",
           newlineOperator: this.languageConfig.newlineOperator,
+          multiTurn: this.languageConfig.multiTurn,
+          promptNewlineEnd: this.languageConfig.promptNewlineEnd,
         };
       }
     } else {

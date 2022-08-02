@@ -21,6 +21,8 @@ export const DefaultPromptConfig: IPromptConfig = {
   descriptionPrefix: "",
   descriptionPostfix: "",
   newlineOperator: "\n",
+  multiTurn: true,
+  promptNewlineEnd: true
 };
 
 const tokenizer = new GPT3Tokenizer({ type: 'gpt3' });
@@ -270,7 +272,7 @@ export class PromptEngine implements IPromptEngine {
    * @param inputLength Length of the input string - used to determine how long the context can be
    * @returns A context string containing description, examples and ongoing interactions with the model
    */
-  public buildContext(userInput?: string, multiTurn: boolean = true): Context {
+  public buildContext(userInput?: string): Context {
     let context = "";
     context = this.insertDescription(context);
     context = this.insertExamples(context);
@@ -280,7 +282,7 @@ export class PromptEngine implements IPromptEngine {
       this.throwContextOverflowError();
     }
 
-    if (multiTurn){
+    if (this.promptConfig.multiTurn){
       context = this.insertInteractions(context, userInput);
     }
     
@@ -305,10 +307,20 @@ export class PromptEngine implements IPromptEngine {
    * It then appends the current interaction history and the current input,
    * to effectively coax a new response from the model.
    */
-  public buildPrompt(input: string, multiTurn: boolean = true): Prompt {
+  public buildPrompt(input: string, injectStartText: boolean = true): Prompt {
     let formattedInput = this.formatInput(input);
-    let prompt = this.buildContext(formattedInput, multiTurn);
+    let prompt = this.buildContext(formattedInput);
     prompt += formattedInput;
+
+    if (injectStartText && this.promptConfig.outputPrefix) {
+      prompt += `${this.promptConfig.outputPrefix} `
+      if (this.promptConfig.promptNewlineEnd) {
+        prompt += this.promptConfig.newlineOperator;
+      }
+    }
+
+    
+
     return prompt;
   }
 
@@ -346,6 +358,7 @@ export class PromptEngine implements IPromptEngine {
     formatted += this.promptConfig.newlineOperator
       ? this.promptConfig.newlineOperator
       : "";
+    
     return formatted;
   };
 
