@@ -11,6 +11,8 @@ export const JavaScriptConfig: ICodePromptConfig = {
   commentOperator: "/*",
   closeCommentOperator: "*/",
   newlineOperator: "\n",
+  multiTurn: true,
+  promptNewlineEnd: true,
 };
 
 export class CodeEngine extends PromptEngine {
@@ -33,6 +35,8 @@ export class CodeEngine extends PromptEngine {
       descriptionPrefix: this.languageConfig.descriptionCommentOperator,
       descriptionPostfix: this.languageConfig.descriptionCloseCommentOperator,
       newlineOperator: this.languageConfig.newlineOperator,
+      multiTurn: this.languageConfig.multiTurn,
+      promptNewlineEnd: this.languageConfig.promptNewlineEnd,
     };
   }
 
@@ -68,6 +72,8 @@ export class CodeEngine extends PromptEngine {
           descriptionPrefix: this.languageConfig.commentOperator,
           descriptionPostfix: this.languageConfig.closeCommentOperator,
           newlineOperator: this.languageConfig.newlineOperator,
+          multiTurn: this.languageConfig.multiTurn,
+          promptNewlineEnd: this.languageConfig.promptNewlineEnd,
         };
       }
     } else {

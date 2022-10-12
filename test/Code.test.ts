@@ -231,13 +231,15 @@ describe("Initialized NL-to-Code Engine without multi-turn should produce the co
     expect(prompt).toBe(
       `/* ${description} */\n\n/* Make a cube */\nmakeCube();\n\n/* Make a sphere */\nmakeSphere();\n\n/* Make a cube */\ncube = makeCube();\n\n/* Make a sphere */\nsphere = makeSphere();\n\n/* Make a cylinder */\n`
     );
-
-    prompt = codeEngine.buildPrompt("Make a cylinder", false);
+    
+    codeEngine.promptConfig.multiTurn = false;
+    prompt = codeEngine.buildPrompt("Make a cylinder");
     expect(prompt).toBe(
       `/* ${description} */\n\n/* Make a cube */\nmakeCube();\n\n/* Make a sphere */\nmakeSphere();\n\n/* Make a cylinder */\n`
     );
 
-    prompt = codeEngine.buildPrompt("Make a cylinder", true);
+    codeEngine.promptConfig.multiTurn = true;
+    prompt = codeEngine.buildPrompt("Make a cylinder");
     expect(prompt).toBe(
       `/* ${description} */\n\n/* Make a cube */\nmakeCube();\n\n/* Make a sphere */\nmakeSphere();\n\n/* Make a cube */\ncube = makeCube();\n\n/* Make a sphere */\nsphere = makeSphere();\n\n/* Make a cylinder */\n`
     );

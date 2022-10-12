@@ -25,6 +25,8 @@ export interface IPromptConfig {
   outputPrefix: string;
   outputPostfix: string;
   newlineOperator: string;
+  multiTurn: boolean;
+  promptNewlineEnd: boolean;
 }
 
 export interface ICodePromptConfig {
@@ -34,6 +36,8 @@ export interface ICodePromptConfig {
   commentOperator: string;
   closeCommentOperator: string;
   newlineOperator: string;
+  multiTurn: boolean,
+  promptNewlineEnd: boolean,
 }
 
 export interface IChatConfig {
@@ -41,4 +45,6 @@ export interface IChatConfig {
   userName: string;
   botName: string;
   newlineOperator: string;
+  multiTurn: boolean,
+  promptNewlineEnd: boolean,
 }
