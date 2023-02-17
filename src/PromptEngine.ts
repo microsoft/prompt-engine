@@ -53,20 +53,20 @@ export class PromptEngine implements IPromptEngine {
    * @returns context with description added to it
    */
   protected insertDescription(context: string) {
-    if (this.description) {
-      context += this.promptConfig.descriptionPrefix
-        ? `${this.promptConfig.descriptionPrefix} `
-        : "";
-      context += `${this.description}`;
-      context += this.promptConfig.descriptionPostfix
-        ? ` ${this.promptConfig.descriptionPostfix}`
-        : "";
-      context += this.promptConfig.newlineOperator;
-      context += this.promptConfig.newlineOperator;
-      return context;
-    } else {
+    if (!this.description) {
       return "";
     }
+  
+    context += this.promptConfig.descriptionPrefix
+      ? `${this.promptConfig.descriptionPrefix} `
+      : "";
+    context += `${this.description}`;
+    context += this.promptConfig.descriptionPostfix
+      ? ` ${this.promptConfig.descriptionPostfix}`
+      : "";
+    context += this.promptConfig.newlineOperator;
+    context += this.promptConfig.newlineOperator;
+    return context;
   }
 
   /**
